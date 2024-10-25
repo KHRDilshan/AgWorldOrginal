@@ -7,7 +7,7 @@ const {
   signupChecker,
   updateFirstLastName
 } = require("../Controllers/userAuth.controller");
-// const auth = require("../Middlewares/auth.middleware");
+const auth = require("../Middlewares/auth.middleware");
 // const userAuthEp = require("../end-point/userAuth-ep");
 const router = express.Router();
 
