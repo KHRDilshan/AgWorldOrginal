@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-// const db = require("../startup/database");
-// const asyncHandler = require("express-async-handler");
+const db = require("../startup/database");
+const asyncHandler = require("express-async-handler");
 // const {
 //   loginUserSchema,
 //   signupUserSchema,
