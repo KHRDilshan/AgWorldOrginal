@@ -6,15 +6,19 @@ const cropRoutes = require("./routes/cropRoutes");
 const MarketPriceRoutes = require("./routes/marketPriceRoutes");
 
 
+
 // Middlewares
 const app = express();
 app.use(express.json());
 
+app.get('/', (req, res) => res.send('Server is running'));
+
 const myCropRoutes = require("./routes/UserCrop.routes");
 app.use(process.env.AUTHOR, myCropRoutes);
 
-// const userRoutes = require("./routes/userAutth.routes");
-// app.use(process.env.AUTHOR, userRoutes);
+//problem in hosting
+const userRoutes = require("./routes/userAutth.routes");
+app.use(process.env.AUTHOR, userRoutes);
 
 const userFixedAssetsRoutes = require("./routes/fixedAsset.routes");
 app.use(process.env.AUTHOR, userFixedAssetsRoutes);

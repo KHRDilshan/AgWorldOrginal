@@ -13,20 +13,16 @@ const router = express.Router();
 
 router.post("/user-register", userAuthEp.SignupUser);
 
-//router.post('/user-login', loginController);
-router.post("/user-login", userAuthEp.loginUser);
 
-router.get("/user-profile", auth, userAuthEp.getProfileDetails);
+// router.post("/user-login", userAuthEp.loginUser);
 
-router.put("/user-updatePhone", auth, userAuthEp.updatePhoneNumber);
+// router.get("/user-profile", auth, userAuthEp.getProfileDetails);
 
-// router.post("/user-register-checker", signupChecker );
-router.post("/user-register-checker", userAuthEp.signupChecker );
+// router.put("/user-updatePhone", auth, userAuthEp.updatePhoneNumber);
 
-// router.put("/user-update-names", auth, updateFirstLastName );
-router.put("/user-update-names", auth, userAuthEp.updateFirstLastName );
+// router.post("/user-register-checker", userAuthEp.signupChecker );
 
-
+// router.put("/user-update-names", auth, userAuthEp.updateFirstLastName );
 
 
 module.exports = router;
