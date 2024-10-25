@@ -19,10 +19,14 @@ app.use(process.env.AUTHOR, myCropRoutes);
 const userFixedAssetsRoutes = require("./routes/fixedAsset.routes");
 app.use(process.env.AUTHOR, userFixedAssetsRoutes);
 
+const userCurrentAssetsRoutes = require("./routes/currentAssets.routes");
+app.use(process.env.AUTHOR, userCurrentAssetsRoutes);
+
 // Routes
 app.use("/home", home);
 app.use("/api/news", newsRoutes);
 app.use("/api/crop", cropRoutes);
+app.use("/api/market-price", MarketPriceRoutes);
 
 // connection
 const port = process.env.PORT || 9001;
