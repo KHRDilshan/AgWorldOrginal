@@ -1,9 +1,13 @@
 const jwt = require("jsonwebtoken");
 const db = require("../startup/database");
 const asyncHandler = require("express-async-handler");
-const {
-  loginUserSchema
-} = require("../validations/UserAuth-validation");
+// const {
+//   loginUserSchema,
+//   signupUserSchema,
+//   updatePhoneNumberSchema,
+//   signupCheckerSchema,
+//   updateFirstLastNameSchema
+// } = require("../validations/UserAuth-validation");
 const userAuthDao = require("../dao/userAuth-dao");
 const userProfileDao = require("../dao/userAuth-dao");
 const signupDao = require('../dao/userAuth-dao');
@@ -11,7 +15,7 @@ const signupDao = require('../dao/userAuth-dao');
 exports.loginUser = async (req, res) => {
   try {
     console.log("hi..the sec key is", process.env.JWT_SECRET);
-    await loginUserSchema.validateAsync(req.body);
+    // await loginUserSchema.validateAsync(req.body);
 
     const phonenumber = req.body.phonenumber;
     console.log("hi phonenumber", phonenumber);
@@ -61,7 +65,7 @@ exports.loginUser = async (req, res) => {
 exports.SignupUser = asyncHandler(async (req, res) => {
   try {
     // Validate the request body using Joi schema
-    await signupUserSchema.validateAsync(req.body);
+    // await signupUserSchema.validateAsync(req.body);
 
     const { firstName, lastName, phoneNumber, NICnumber } = req.body;
 
@@ -136,7 +140,7 @@ exports.updatePhoneNumber = asyncHandler(async (req, res) => {
   const { newPhoneNumber } = req.body; // New phone number from request body
 
   // Validate the request body
-  await updatePhoneNumberSchema.validateAsync(req.body);
+  // await updatePhoneNumberSchema.validateAsync(req.body);
 
   // Call the DAO to update the phone number
   const results = await userAuthDao.updateUserPhoneNumber(
@@ -163,7 +167,7 @@ exports.updatePhoneNumber = asyncHandler(async (req, res) => {
 exports.signupChecker = asyncHandler(async (req, res) => {
   try {
       // Validate the request body
-      await signupCheckerSchema.validateAsync(req.body);
+      // await signupCheckerSchema.validateAsync(req.body);
 
       const { phoneNumber, NICnumber } = req.body;
 
