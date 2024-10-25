@@ -24,6 +24,6 @@ exports.signupCheckerSchema = Joi.object({
 
   exports.updateFirstLastNameSchema = Joi.object({
     firstName: Joi.string().required().label('First Name'),
-    // lastName: Joi.string().required().label('Last Name')
+    lastName: Joi.string().required().label('Last Name')
 });
 
