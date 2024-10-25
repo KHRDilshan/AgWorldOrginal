@@ -20,7 +20,7 @@ router.get("/user-profile", auth, userAuthEp.getProfileDetails);
 
 router.put("/user-updatePhone", auth, userAuthEp.updatePhoneNumber);
 
-// router.post("/user-register-checker", userAuthEp.signupChecker );
+router.post("/user-register-checker", userAuthEp.signupChecker );
 
 // router.put("/user-update-names", auth, userAuthEp.updateFirstLastName );
 
