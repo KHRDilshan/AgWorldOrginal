@@ -14,7 +14,8 @@ exports.signupUserSchema = Joi.object({
 });
 
 exports.updatePhoneNumberSchema = Joi.object({
-    newPhoneNumber: Joi.number().integer().required().label('New Phone Number'),
+    //newPhoneNumber: Joi.string().required().label('New Phone Number'), // New phone number must be provided
+    newPhoneNumber: Joi.number().integer().min(1000000000).max(999999999999999).required().label('New Phone Number'),
 });
 
 exports.signupCheckerSchema = Joi.object({
