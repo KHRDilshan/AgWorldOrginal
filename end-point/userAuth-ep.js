@@ -1,13 +1,13 @@
 const jwt = require("jsonwebtoken");
 const db = require("../startup/database");
 const asyncHandler = require("express-async-handler");
-const {
-  loginUserSchema,
-  signupUserSchema,
-  updatePhoneNumberSchema,
-  signupCheckerSchema,
-  updateFirstLastNameSchema
-} = require("../validations/UserAuth-validation");
+// const {
+//   loginUserSchema,
+//   signupUserSchema,
+//   updatePhoneNumberSchema,
+//   signupCheckerSchema,
+//   updateFirstLastNameSchema
+// } = require("../validations/UserAuth-validation");
 // const userAuthDao = require("../dao/userAuth-dao");
 // const userProfileDao = require("../dao/userAuth-dao");
 // const signupDao = require('../dao/userAuth-dao');
