@@ -21,7 +21,7 @@ exports.updatePhoneNumberSchema = Joi.object({
 exports.signupCheckerSchema = Joi.object({
     phoneNumber: Joi.string().optional().label('Phone Number'),
     NICnumber: Joi.string().optional().label('NIC Number'),
-  }).or('phoneNumber', 'NICnumber').label('Request Data');
+  });
 
   exports.updateFirstLastNameSchema = Joi.object({
     firstName: Joi.string().required().label('First Name'),
