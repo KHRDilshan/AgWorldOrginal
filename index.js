@@ -22,6 +22,9 @@ app.use(process.env.AUTHOR, userFixedAssetsRoutes);
 const userCurrentAssetsRoutes = require("./routes/currentAssets.routes");
 app.use(process.env.AUTHOR, userCurrentAssetsRoutes);
 
+const publicforumRoutes = require("./routes/publicforum.routes");
+app.use(process.env.AUTHOR, publicforumRoutes);
+
 // Routes
 app.use("/home", home);
 app.use("/api/news", newsRoutes);
