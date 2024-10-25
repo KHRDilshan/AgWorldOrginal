@@ -1,9 +1,17 @@
 const asyncHandler = require("express-async-handler");
+
+const {
+  getPostsSchema,
+  getRepliesSchema,
+  createReplySchema,
+  createPostSchema,
+} = require("../validations/publicForum-validation");
 const postsDao = require("../dao/publicForum-dao");
 
 exports.getPosts = asyncHandler(async (req, res) => {
   try {
-    const { page = 1, limit = 10 } = req.query; // Default to page 1 and limit 10 if not provided
+    // Validate query parameters
+    const { page, limit } = await getPostsSchema.validateAsync(req.query);
     const offset = (page - 1) * limit;
 
     // Fetch posts using DAO
@@ -19,13 +27,22 @@ exports.getPosts = asyncHandler(async (req, res) => {
     });
   } catch (err) {
     console.error("Error fetching posts:", err);
+
+    if (err.isJoi) {
+      return res.status(400).json({
+        status: "error",
+        message: err.details[0].message,
+      });
+    }
+
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
 exports.getReplies = asyncHandler(async (req, res) => {
   try {
-    const { chatId } = req.params; // Extract chatId from request parameters
+    // Validate the request parameter
+    const { chatId } = await getRepliesSchema.validateAsync(req.params);
 
     // Fetch replies using DAO
     const replies = await postsDao.getRepliesByChatId(chatId);
@@ -34,13 +51,24 @@ exports.getReplies = asyncHandler(async (req, res) => {
     res.status(200).json(replies);
   } catch (err) {
     console.error("Error fetching replies:", err);
+
+    if (err.isJoi) {
+      return res.status(400).json({
+        status: "error",
+        message: err.details[0].message,
+      });
+    }
+
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
 exports.createReply = asyncHandler(async (req, res) => {
   try {
-    const { chatId, replyMessage } = req.body; // Extract reply data from request body
+    // Validate the request body
+    const { chatId, replyMessage } = await createReplySchema.validateAsync(
+      req.body
+    );
     const replyId = req.user.id;
 
     // Create reply using DAO
@@ -54,13 +82,22 @@ exports.createReply = asyncHandler(async (req, res) => {
     res.status(201).json({ message: "Reply created", replyId: newReplyId });
   } catch (err) {
     console.error("Error creating reply:", err);
+
+    if (err.isJoi) {
+      return res.status(400).json({
+        status: "error",
+        message: err.details[0].message,
+      });
+    }
+
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
 exports.createPost = asyncHandler(async (req, res) => {
   try {
-    const { heading, message } = req.body; // Extract post data from request body
+    // Validate the request body
+    const { heading, message } = await createPostSchema.validateAsync(req.body);
     const userId = req.user.id;
 
     console.log("Heading:", heading);
@@ -88,6 +125,14 @@ exports.createPost = asyncHandler(async (req, res) => {
     res.status(201).json({ message: "Post created", postId: newPostId });
   } catch (err) {
     console.error("Error creating post:", err);
+
+    if (err.isJoi) {
+      return res.status(400).json({
+        status: "error",
+        message: err.details[0].message,
+      });
+    }
+
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
