@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 // Apply CORS for a specific origin
 app.use(
     cors({
-        origin: "http://localhost:8081", // The client origin that is allowed to access the resource
+        origin: "*", // The client origin that is allowed to access the resource
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed methods
         credentials: true, // Allow credentials (cookies, auth headers)
     })
@@ -26,7 +26,7 @@ app.use(
 app.options(
     "*",
     cors({
-        origin: "http://localhost:8081", // Allow the client origin for preflight
+        origin: "*", // Allow the client origin for preflight
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allowed methods for the preflight response
         credentials: true,
     })
