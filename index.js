@@ -5,7 +5,7 @@ const newsRoutes = require("./routes/news");
 const cropRoutes = require("./routes/cropRoutes");
 const MarketPriceRoutes = require("./routes/marketPriceRoutes");
 const cors = require("cors");
-
+require("dotenv").config();
 // Middlewares
 const app = express();
 app.use(express.json());
