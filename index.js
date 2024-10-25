@@ -14,22 +14,22 @@ app.use(express.json());
 const myCropRoutes = require("./routes/UserCrop.routes");
 app.use(process.env.AUTHOR, myCropRoutes);
 
-const userRoutes = require("./routes/userAutth.routes");
-app.use(process.env.AUTHOR, userRoutes);
+// const userRoutes = require("./routes/userAutth.routes");
+// app.use(process.env.AUTHOR, userRoutes);
 
-const userFixedAssetsRoutes = require("./routes/fixedAsset.routes");
-app.use(process.env.AUTHOR, userFixedAssetsRoutes);
+// const userFixedAssetsRoutes = require("./routes/fixedAsset.routes");
+// app.use(process.env.AUTHOR, userFixedAssetsRoutes);
 
-const userCurrentAssetsRoutes = require("./routes/currentAssets.routes");
-app.use(process.env.AUTHOR, userCurrentAssetsRoutes);
+// const userCurrentAssetsRoutes = require("./routes/currentAssets.routes");
+// app.use(process.env.AUTHOR, userCurrentAssetsRoutes);
 
-const publicforumRoutes = require("./routes/publicforum.routes");
-app.use(process.env.AUTHOR, publicforumRoutes);
+// const publicforumRoutes = require("./routes/publicforum.routes");
+// app.use(process.env.AUTHOR, publicforumRoutes);
 
 // API routes
 app.use("/api/news", newsRoutes);
 app.use("/api/crop", cropRoutes);
-app.use("/api/market-price", MarketPriceRoutes);
+// app.use("/api/market-price", MarketPriceRoutes);
 
 // connection
 const port = process.env.PORT || 9001;
