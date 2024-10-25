@@ -4,7 +4,7 @@ const home = require("./routes/home");
 const newsRoutes = require("./routes/news");
 const cropRoutes = require("./routes/cropRoutes");
 const MarketPriceRoutes = require("./routes/marketPriceRoutes");
-
+const cors = require("cors");
 
 
 // Middlewares
