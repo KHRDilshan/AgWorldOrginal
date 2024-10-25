@@ -13,9 +13,11 @@ app.use(express.json());
 const myCropRoutes = require("./routes/UserCrop.routes");
 app.use(process.env.AUTHOR, myCropRoutes);
 
-const userRoutes = require("./routes/userAutth.routes");
-app.use(process.env.AUTHOR, userRoutes);
+// const userRoutes = require("./routes/userAutth.routes");
+// app.use(process.env.AUTHOR, userRoutes);
 
+const userFixedAssetsRoutes = require("./routes/fixedAsset.routes");
+app.use(process.env.AUTHOR, userFixedAssetsRoutes);
 
 // Routes
 app.use("/home", home);
