@@ -14,7 +14,7 @@ const router = express.Router();
 // router.post("/user-register", userAuthEp.SignupUser);
 
 
-// router.post("/user-login", userAuthEp.loginUser);
+router.post("/user-login", userAuthEp.loginUser);
 
 // router.get("/user-profile", auth, userAuthEp.getProfileDetails);
 
