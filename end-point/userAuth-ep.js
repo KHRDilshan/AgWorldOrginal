@@ -257,26 +257,23 @@ const {
   signupUserSchema,
   updatePhoneNumberSchema,
   signupCheckerSchema,
-  updateFirstLastNameSchema,
+  updateFirstLastNameSchema
 } = require("../validations/UserAuth-validation");
 const userAuthDao = require("../dao/userAuth-dao");
 
 // Login User
 exports.loginUser = asyncHandler(async (req, res) => {
   try {
-    // Validate request body with Joi
+    // Validate request body
     await loginUserSchema.validateAsync(req.body);
 
     const { phonenumber } = req.body;
 
-    // Fetch user from the database
+    // Fetch user from database
     const users = await userAuthDao.loginUser(phonenumber);
 
     if (!users || users.length === 0) {
-      return res.status(404).json({
-        status: "error",
-        message: "User not found.",
-      });
+      return res.status(404).json({ status: "error", message: "User not found." });
     }
 
     const user = users[0];
@@ -288,34 +285,26 @@ exports.loginUser = asyncHandler(async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    // Return success response
-    res.status(200).json({
-      status: "success",
-      message: "Login successful.",
-      token,
-    });
+    res.status(200).json({ status: "success", message: "Login successful.", token });
   } catch (err) {
     console.error("Error during login:", err);
 
-    // Handle Joi validation error
     if (err.isJoi) {
-      return res.status(400).json({
-        status: "error",
-        message: err.details[0].message,
-      });
+      return res.status(400).json({ status: "error", message: err.details[0].message });
     }
 
-    res.status(500).json({
-      status: "error",
-      message: "An error occurred during login.",
-    });
+    if (err.message.includes("secret")) {
+      return res.status(500).json({ status: "error", message: "JWT secret is not set." });
+    }
+
+    res.status(500).json({ status: "error", message: "Internal Server Error." });
   }
 });
 
 // Signup User
 exports.SignupUser = asyncHandler(async (req, res) => {
   try {
-    // Validate request body with Joi
+    // Validate request body
     await signupUserSchema.validateAsync(req.body);
 
     const { firstName, lastName, phoneNumber, NICnumber } = req.body;
@@ -325,10 +314,7 @@ exports.SignupUser = asyncHandler(async (req, res) => {
     const existingUser = await userAuthDao.checkUserByPhoneNumber(formattedPhoneNumber);
 
     if (existingUser.length > 0) {
-      return res.status(400).json({
-        status: "error",
-        message: "This mobile number exists in the database, please try another.",
-      });
+      return res.status(400).json({ status: "error", message: "This mobile number exists in the database, please try another." });
     }
 
     // Insert new user into the database
@@ -338,7 +324,6 @@ exports.SignupUser = asyncHandler(async (req, res) => {
   } catch (err) {
     console.error("Error in SignupUser:", err);
 
-    // Handle Joi validation error
     if (err.isJoi) {
       return res.status(400).json({ status: "error", message: err.details[0].message });
     }
@@ -356,53 +341,37 @@ exports.getProfileDetails = asyncHandler(async (req, res) => {
     const user = await userAuthDao.getUserProfileById(userId);
 
     if (!user) {
-      return res.status(404).json({
-        status: "error",
-        message: "User not found.",
-      });
+      return res.status(404).json({ status: "error", message: "User not found." });
     }
 
-    res.status(200).json({
-      status: "success",
-      user,
-    });
+    res.status(200).json({ status: "success", user });
   } catch (err) {
     console.error("Error fetching profile details:", err);
-    res.status(500).json({
-      status: "error",
-      message: "An error occurred while fetching profile details.",
-    });
+    res.status(500).json({ status: "error", message: "An error occurred while fetching profile details." });
   }
 });
 
 // Update Phone Number
 exports.updatePhoneNumber = asyncHandler(async (req, res) => {
   try {
-    // Validate request body with Joi
+    // Validate request body
     await updatePhoneNumberSchema.validateAsync(req.body);
 
     const userId = req.user.id;
     const { newPhoneNumber } = req.body;
     const formattedPhoneNumber = `+${String(newPhoneNumber).replace(/^\+/, "")}`;
 
-    // Update phone number in the database
+    // Update phone number in database
     const results = await userAuthDao.updateUserPhoneNumber(userId, formattedPhoneNumber);
 
     if (results.affectedRows === 0) {
-      return res.status(404).json({
-        status: "error",
-        message: "User not found.",
-      });
+      return res.status(404).json({ status: "error", message: "User not found." });
     }
 
-    res.status(200).json({
-      status: "success",
-      message: "Phone number updated successfully.",
-    });
+    res.status(200).json({ status: "success", message: "Phone number updated successfully." });
   } catch (err) {
     console.error("Error updating phone number:", err);
 
-    // Handle Joi validation error
     if (err.isJoi) {
       return res.status(400).json({ status: "error", message: err.details[0].message });
     }
@@ -414,7 +383,7 @@ exports.updatePhoneNumber = asyncHandler(async (req, res) => {
 // Signup Checker
 exports.signupChecker = asyncHandler(async (req, res) => {
   try {
-    // Validate request body with Joi
+    // Validate request body
     await signupCheckerSchema.validateAsync(req.body);
 
     const { phoneNumber, NICnumber } = req.body;
@@ -446,7 +415,6 @@ exports.signupChecker = asyncHandler(async (req, res) => {
   } catch (err) {
     console.error("Error in signupChecker:", err);
 
-    // Handle Joi validation error
     if (err.isJoi) {
       return res.status(400).json({ status: "error", message: err.details[0].message });
     }
@@ -458,7 +426,7 @@ exports.signupChecker = asyncHandler(async (req, res) => {
 // Update First and Last Name
 exports.updateFirstLastName = asyncHandler(async (req, res) => {
   try {
-    // Validate request body with Joi
+    // Validate request body
     await updateFirstLastNameSchema.validateAsync(req.body);
 
     const { firstName, lastName } = req.body;
@@ -468,20 +436,13 @@ exports.updateFirstLastName = asyncHandler(async (req, res) => {
     const affectedRows = await userAuthDao.updateFirstLastName(userId, firstName, lastName);
 
     if (affectedRows === 0) {
-      return res.status(404).json({
-        status: "error",
-        message: "User not found.",
-      });
+      return res.status(404).json({ status: "error", message: "User not found." });
     }
 
-    res.status(200).json({
-      status: "success",
-      message: "First and last name updated successfully.",
-    });
+    res.status(200).json({ status: "success", message: "First and last name updated successfully." });
   } catch (err) {
     console.error("Error updating first and last name:", err);
 
-    // Handle Joi validation error
     if (err.isJoi) {
       return res.status(400).json({ status: "error", message: err.details[0].message });
     }
