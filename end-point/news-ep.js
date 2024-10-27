@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const { getAllNewsSchema,getNewsByIdSchema  } = require('../validations/news-validation');
+// const { getAllNewsSchema,getNewsByIdSchema  } = require('../validations/news-validation');
 const { getAllNewsData,getNewsByIdData } = require('../dao/news-dao');
 
 // Controller to fetch all news content
