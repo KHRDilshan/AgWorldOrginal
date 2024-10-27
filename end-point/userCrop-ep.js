@@ -67,7 +67,7 @@ exports.getCropById = asyncHandler(async (req, res) => {
     // Validate the cropId parameter
     // await getCropByIdSchema.validateAsync(req.params);
 
-    const cropId = req.params.id;
+    // const cropId = req.params.id;
 
     // Use the DAO to get crop details by crop ID
     const results = await cropDao.getCropById(cropId);
@@ -103,11 +103,11 @@ exports.CropCalanderFeed = asyncHandler(async (req, res) => {
     //   });
     // }
 
-    const userId = req.user.id; // Extract userId from token (assuming authentication middleware)
-    const cropId = req.params.cropid; // Get cropId from URL parameters
+    // const userId = req.user.id; // Extract userId from token (assuming authentication middleware)
+    // const cropId = req.params.cropid; // Get cropId from URL parameters
 
-    console.log("hi...User ID:", userId);
-    console.log("hi.. Crop ID:", cropId);
+    // console.log("hi...User ID:", userId);
+    // console.log("hi.. Crop ID:", cropId);
 
     // Fetch crop calendar feed using DAO
     const results = await cropDao.getCropCalendarFeed(userId, cropId);
@@ -231,10 +231,10 @@ exports.enroll = asyncHandler(async (req, res) => {
   // }
 
   try {
-    const cropId = req.params.cropId;
-    const userId = req.user.id;
+    // const cropId = req.params.cropId;
+    // const userId = req.user.id;
 
-    console.log("User ID:", userId, "Crop ID:", cropId);
+    // console.log("User ID:", userId, "Crop ID:", cropId);
 
     // Check if the user already has an ongoing cultivation
     let cultivationId;
@@ -293,11 +293,11 @@ exports.getSlaveCropCalendarDaysByUserAndCrop = asyncHandler(async (req, res) =>
         // Validate the incoming request
         // await getSlaveCropCalendarDaysSchema.validateAsync(req.params);
 
-        const userId = req.user.id;
-        const cropCalendarId = req.params.cropCalendarId;
+        // const userId = req.user.id;
+        // const cropCalendarId = req.params.cropCalendarId;
 
-        console.log("User ID:", userId);
-        console.log("Crop Calendar ID:", cropCalendarId);
+        // console.log("User ID:", userId);
+        // console.log("Crop Calendar ID:", cropCalendarId);
 
         // Fetch data using the DAO
         const results = await cropDao.getSlaveCropCalendarDaysByUserAndCrop(userId, cropCalendarId);
