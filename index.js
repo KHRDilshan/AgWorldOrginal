@@ -34,36 +34,22 @@ app.options(
 
 app.get('/', (req, res) => res.send('Server is running'));
 
-// const myCropRoutes = require("./routes/UserCrop.routes");
-// app.use("/api/auth", myCropRoutes);
-
-// //problem in hosting
-// const userRoutes = require("./routes/userAutth.routes");
-// app.use("/api/auth", userRoutes);
-
-// const userFixedAssetsRoutes = require("./routes/fixedAsset.routes");
-// app.use("/api/auth", userFixedAssetsRoutes);
-
-// const userCurrentAssetsRoutes = require("./routes/currentAssets.routes");
-// app.use("/api/auth", userCurrentAssetsRoutes);
-
-// const publicforumRoutes = require("./routes/publicforum.routes");
-// app.use("/api/auth", publicforumRoutes);
-
 const myCropRoutes = require("./routes/UserCrop.routes");
-app.use(process.env.AUTHOR, myCropRoutes);
+app.use("/api/auth", myCropRoutes);
 
+//problem in hosting
 const userRoutes = require("./routes/userAutth.routes");
-app.use(process.env.AUTHOR, userRoutes);
+app.use("/api/auth", userRoutes);
 
 const userFixedAssetsRoutes = require("./routes/fixedAsset.routes");
-app.use(process.env.AUTHOR, userFixedAssetsRoutes);
+app.use("/api/auth", userFixedAssetsRoutes);
 
 const userCurrentAssetsRoutes = require("./routes/currentAssets.routes");
-app.use(process.env.AUTHOR, userCurrentAssetsRoutes);
+app.use("/api/auth", userCurrentAssetsRoutes);
 
 const publicforumRoutes = require("./routes/publicforum.routes");
-app.use(process.env.AUTHOR, publicforumRoutes);
+app.use("/api/auth", publicforumRoutes);
+
 
 // Routes
 app.use("/home", home);
