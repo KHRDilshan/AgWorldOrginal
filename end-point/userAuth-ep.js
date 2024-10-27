@@ -7,7 +7,7 @@ const signupDao = require('../dao/userAuth-dao');
 
 exports.loginUser = async (req, res) => {
   try {
-    console.log("hi..the sec key is", process.env.JWT_SECRET);
+    // console.log("hi..the sec key is", process.env.JWT_SECRET);
 
     const phonenumber = req.body.phonenumber;
     console.log("hi phonenumber", phonenumber);
