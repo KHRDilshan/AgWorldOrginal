@@ -39,8 +39,8 @@ exports.getCropByCategory = asyncHandler(async (req, res) => {
     //   });
     // }
 
-    const { categorie } = req.params;
-    console.log(req.params)
+    // const { categorie } = req.params;
+    // console.log(req.params)
 
     // Call the DAO to get crops by category
     const crops = await cropDao.getCropByCategory(categorie);
