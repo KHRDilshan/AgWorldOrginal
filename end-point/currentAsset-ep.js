@@ -2,23 +2,23 @@
 
 const currentAssetsDao = require("../dao/currentAsset-dao"); // Import DAO
 const asyncHandler = require("express-async-handler"); // Handle async errors
-const {
-  getAllCurrentAssetsSchema,
-} = require("../validations/currentAsset-validation"); // Import validation schema
+// const {
+//   getAllCurrentAssetsSchema,
+// } = require("../validations/currentAsset-validation"); // Import validation schema
 
-const {
-  getAssetsByCategorySchema,
-} = require("../validations/currentAsset-validation"); // Import validation schema
+// const {
+//   getAssetsByCategorySchema,
+// } = require("../validations/currentAsset-validation"); // Import validation schema
 
-const { deleteAssetSchema, deleteAssetParamsSchema } = require('../validations/currentAsset-validation'); // Import validation schemas
-const { addFixedAssetSchema } = require('../validations/currentAsset-validation');
+// const { deleteAssetSchema, deleteAssetParamsSchema } = require('../validations/currentAsset-validation'); // Import validation schemas
+// const { addFixedAssetSchema } = require('../validations/currentAsset-validation');
 const fixedAssetDao = require('../dao/currentAsset-dao');
 
 // Controller to get current assets grouped by category
 exports.getAllCurrentAssets = asyncHandler(async (req, res) => {
   try {
     // Validate the request if needed (future expansion)
-    await getAllCurrentAssetsSchema.validateAsync({ userId: req.user.id });
+    // await getAllCurrentAssetsSchema.validateAsync({ userId: req.user.id });
 
     const userId = req.user.id; // Get logged-in user's ID from auth middleware
 
@@ -54,11 +54,11 @@ exports.getAssetsByCategory = asyncHandler(async (req, res) => {
     console.log("User ID:", userId);
 
     // Validate the query parameters
-    const { category } = await getAssetsByCategorySchema.validateAsync(
-      req.query
-    );
+    // const { category } = await getAssetsByCategorySchema.validateAsync(
+    //   req.query
+    // );
 
-    console.log("Category:", category);
+    // console.log("Category:", category);
 
     // Call the DAO to fetch assets by category for the given user ID
     const assets = await currentAssetsDao.getAssetsByCategory(userId, category);
@@ -103,11 +103,11 @@ exports.deleteAsset = asyncHandler(async (req, res) => {
         console.log('hi... Parameters:', req.params);
 
         // Validate the request parameters
-        await deleteAssetParamsSchema.validateAsync(req.params);
+        // await deleteAssetParamsSchema.validateAsync(req.params);
 
         // Validate the request body
-        const { numberOfUnits, totalPrice } = await deleteAssetSchema.validateAsync(req.body);
-        console.log('Body:', numberOfUnits, totalPrice);
+        // const { numberOfUnits, totalPrice } = await deleteAssetSchema.validateAsync(req.body);
+        // console.log('Body:', numberOfUnits, totalPrice);
 
         // Retrieve the current asset record for the user
         const assets = await currentAssetsDao.getCurrentAsset(userId, category, assetId);
@@ -172,7 +172,7 @@ exports.handleAddFixedAsset = async (req, res) => {
 
   try {
       // Validate request body against the schema
-      await addFixedAssetSchema.validateAsync(req.body);
+      // await addFixedAssetSchema.validateAsync(req.body);
 
       // Convert volume to a float (to allow decimal values)
       const volumeFloat = parseFloat(volume);
