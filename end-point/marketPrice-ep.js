@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const { getAllMarketSchema } = require("../validations/marketPrice-validation");
+// const { getAllMarketSchema } = require("../validations/marketPrice-validation");
 const { getAllMarketData } = require("../dao/marketPrice-dao");
 
 // Controller to fetch all market data
