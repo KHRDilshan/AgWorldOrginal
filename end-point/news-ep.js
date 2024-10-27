@@ -6,10 +6,10 @@ const { getAllNewsData,getNewsByIdData } = require('../dao/news-dao');
 exports.getAllNews = asyncHandler(async (req, res) => {
   try {
     // Validate the request (future-proofing for potential query parameters)
-    const { error } = getAllNewsSchema.validate(req.query);
-    if (error) {
-      return res.status(400).json({ status: 'error', message: error.details[0].message });
-    }
+    // const { error } = getAllNewsSchema.validate(req.query);
+    // if (error) {
+    //   return res.status(400).json({ status: 'error', message: error.details[0].message });
+    // }
 
     // Use DAO to get the news content from the database
     const results = await getAllNewsData();
@@ -32,10 +32,10 @@ exports.getAllNews = asyncHandler(async (req, res) => {
 exports.getNewsById = asyncHandler(async (req, res) => {
     try {
       // Validate the request parameters
-      const { error } = getNewsByIdSchema.validate(req.params);
-      if (error) {
-        return res.status(400).json({ status: 'error', message: error.details[0].message });
-      }
+      // const { error } = getNewsByIdSchema.validate(req.params);
+      // if (error) {
+      //   return res.status(400).json({ status: 'error', message: error.details[0].message });
+      // }
   
       const newsId = req.params.newsId;
   
