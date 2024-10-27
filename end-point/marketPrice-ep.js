@@ -6,7 +6,7 @@ const { getAllMarketData } = require("../dao/marketPrice-dao");
 exports.getAllMarket = asyncHandler(async (req, res) => {
   try {
     // Validate the request using Joi schema
-    const { error } = getAllMarketSchema.validate(req.query);
+    // const { error } = getAllMarketSchema.validate(req.query);
     if (error) {
       return res
         .status(400)
