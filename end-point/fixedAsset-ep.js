@@ -14,7 +14,7 @@ exports.getFixedAssetsByCategoryAndUser = asyncHandler(async (req, res) => {
     // Validate the incoming request parameters using Joi
     // await fixedAssetsSchema.validateAsync(req.params);
 
-    // const { category } = req.params;
+    const { category } = req.params;
     const userId = req.user.id; // Assume user ID is available from authentication middleware
 
     // Call DAO function to get fixed assets based on category and userId
@@ -61,7 +61,7 @@ exports.deleteFixedAsset = asyncHandler(async (req, res) => {
     // Validate the request body with Joi
     // await deleteFixedAssetSchema.validateAsync(req.body);
 
-    // const { ids } = req.body;
+    const { ids } = req.body;
     const idArray = Array.isArray(ids) ? ids : [ids]; // Ensure ids is an array
 
     // Begin the deletion process using the DAO
