@@ -58,7 +58,7 @@ app.use("/api/crop", cropRoutes);
 app.use("/api/market-price", MarketPriceRoutes);
 
 // connection
-const port = process.env.PORT || 9001;
+const port = process.env.DB_PORT || 9001;
 app.listen(port, () => console.log(`Listening to port ${port}`));
 
 
