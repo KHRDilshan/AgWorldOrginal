@@ -1,12 +1,12 @@
 const asyncHandler = require("express-async-handler");
-// const { getAllMarketSchema } = require("../validations/marketPrice-validation");
+const { getAllMarketSchema } = require("../validations/marketPrice-validation");
 const { getAllMarketData } = require("../dao/marketPrice-dao");
 
 // Controller to fetch all market data
 exports.getAllMarket = asyncHandler(async (req, res) => {
   try {
     // Validate the request using Joi schema
-    // const { error } = getAllMarketSchema.validate(req.query);
+    const { error } = getAllMarketSchema.validate(req.query);
     if (error) {
       return res
         .status(400)

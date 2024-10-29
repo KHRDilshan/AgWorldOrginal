@@ -1,18 +1,18 @@
 const asyncHandler = require("express-async-handler");
 
-// const {
-//   getPostsSchema,
-//   getRepliesSchema,
-//   createReplySchema,
-//   createPostSchema,
-// } = require("../validations/publicForum-validation");
+const {
+  getPostsSchema,
+  getRepliesSchema,
+  createReplySchema,
+  createPostSchema,
+} = require("../validations/publicForum-validation");
 const postsDao = require("../dao/publicForum-dao");
 
 exports.getPosts = asyncHandler(async (req, res) => {
   try {
     // Validate query parameters
-    // const { page, limit } = await getPostsSchema.validateAsync(req.query);
-    // const offset = (page - 1) * limit;
+    const { page, limit } = await getPostsSchema.validateAsync(req.query);
+    const offset = (page - 1) * limit;
 
     // Fetch posts using DAO
     const posts = await postsDao.getPaginatedPosts(limit, offset);
@@ -42,7 +42,7 @@ exports.getPosts = asyncHandler(async (req, res) => {
 exports.getReplies = asyncHandler(async (req, res) => {
   try {
     // Validate the request parameter
-    // const { chatId } = await getRepliesSchema.validateAsync(req.params);
+    const { chatId } = await getRepliesSchema.validateAsync(req.params);
 
     // Fetch replies using DAO
     const replies = await postsDao.getRepliesByChatId(chatId);
@@ -66,9 +66,9 @@ exports.getReplies = asyncHandler(async (req, res) => {
 exports.createReply = asyncHandler(async (req, res) => {
   try {
     // Validate the request body
-    // const { chatId, replyMessage } = await createReplySchema.validateAsync(
-    //   req.body
-    // );
+    const { chatId, replyMessage } = await createReplySchema.validateAsync(
+      req.body
+    );
     const replyId = req.user.id;
 
     // Create reply using DAO
@@ -97,7 +97,7 @@ exports.createReply = asyncHandler(async (req, res) => {
 exports.createPost = asyncHandler(async (req, res) => {
   try {
     // Validate the request body
-    // const { heading, message } = await createPostSchema.validateAsync(req.body);
+    const { heading, message } = await createPostSchema.validateAsync(req.body);
     const userId = req.user.id;
 
     console.log("Heading:", heading);

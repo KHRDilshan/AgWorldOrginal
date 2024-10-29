@@ -2,7 +2,7 @@ const db = require('../startup/database');
 
 // Create a new crop for the logged-in user
 const createCrop = (req, res) => {
-  const { cropcalendar } = req.body;
+  const { cropCalendar } = req.body;
   const userId = req.userId;
 
   const sql = `
@@ -32,7 +32,7 @@ const viewCrops = (req, res) => {
   const userId = req.userId;
 
   const sql = `
-    SELECT c.id, c.cropcalendar, cc.cropName
+    SELECT c.id, c.cropCalendar, cc.cropName
     FROM ongoingCultivations oc
     JOIN ongoingCultivationsCrops c ON oc.id = c.ongoingCultivationId
     JOIN cropCalender cc ON c.cropCalendar = cc.id

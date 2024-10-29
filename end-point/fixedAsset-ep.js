@@ -1,9 +1,9 @@
 // controllers/fixedAssets-ep.js
 
-// const {
-//   fixedAssetsSchema,
-//   deleteFixedAssetSchema,
-// } = require("../validations/fixedAssest-validation"); // Import validation schema
+const {
+  fixedAssetsSchema,
+  deleteFixedAssetSchema,
+} = require("../validations/fixedAssest-validation"); // Import validation schema
 const fixedAssetsDao = require("../dao/fixedAsset-dao"); // Import DAO
 //const { deleteFixedAssetSchema } = require('../validations/fixedAssets-validation'); // Import validation schema
 const asyncHandler = require("express-async-handler");
