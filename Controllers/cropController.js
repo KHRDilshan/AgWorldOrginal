@@ -6,7 +6,7 @@ const { attempt } = require("joi");
 const getCropByCatogory = asyncHandler(async (req, res) => {
   try {
     const categorie = req.params.categorie;
-    const sql = "SELECT * FROM cropCalender WHERE Category=?";
+    const sql = "SELECT * FROM cropcalender WHERE Category=?";
     db.query(sql, [categorie], (err, results) => {
       if (err) {
         console.error("Error executing query:", err);
@@ -24,7 +24,7 @@ const getCropByCatogory = asyncHandler(async (req, res) => {
 const getCropById = asyncHandler(async (req, res) => {
   try {
     const cropid = req.params.id;
-    const sql = "SELECT * FROM cropCalender WHERE id=?";
+    const sql = "SELECT * FROM cropcalender WHERE id=?";
     db.query(sql, [cropid], (err, results) => {
       if (err) {
         console.error("Error executing query:", err);
@@ -49,7 +49,7 @@ const CropCalanderFeed = asyncHandler(async (req, res) => {
     //const sql = 'SELECT * FROM ongoingcultivations c, ongoingcultivationscrops oc, 	cropcalendardays crd WHERE c.id = oc.ongoingCultivationId AND oc.cropCalendar=crd.id AND c.userId = ? AND crd.cropId = ?'
 
     const sql =
-      "SELECT * FROM ongoingCultivations oc, ongoingCultivationsCrops ocr, cropcalendardays cd WHERE oc.id= ocr.ongoingCultivationId and ocr.cropCalendar = cd.cropId and oc.userId=? and cd.cropId=?";
+      "SELECT * FROM ongoingcultivations oc, ongoingcultivationscrops ocr, cropcalendardays cd WHERE oc.id= ocr.ongoingCultivationId and ocr.cropCalendar = cd.cropId and oc.userId=? and cd.cropId=?";
 
     db.query(sql, [userId, cropId], (err, results) => {
       if (err) {
@@ -80,9 +80,9 @@ const enroll = async (req, res) => {
     let cultivationId;
 
     const check_ongoingcultivation_sql =
-      "SELECT id FROM ongoingCultivations WHERE userId = ?";
+      "SELECT id FROM ongoingcultivations WHERE userId = ?";
     const create_ongoingcultivation_sql =
-      "INSERT INTO ongoingCultivations(userId) VALUES (?)";
+      "INSERT INTO ongoingcultivations(userId) VALUES (?)";
     const check_crop_count_sql =
       "SELECT COUNT(id) as count FROM ongoingcultivationscrops WHERE ongoingCultivationId = ?";
     const check_enroll_crop_sql =
@@ -90,7 +90,7 @@ const enroll = async (req, res) => {
     const enroll_ongoingcultivationCrop_sql =
       "INSERT INTO ongoingCultivationsCrops(ongoingCultivationId, cropCalendar) VALUES (?, ?)";
     const enroll_slave_crop_sql = `
-      INSERT INTO slaveCropcalendardays (
+      INSERT INTO slavecropcalendardays (
         userId, cropCalendarId, taskIndex, days, taskTypeEnglish, taskTypeSinhala, taskTypeTamil,
         taskCategoryEnglish, taskCategorySinhala, taskCategoryTamil, taskEnglish, taskSinhala, taskTamil,
         taskDescriptionEnglish, taskDescriptionSinhala, taskDescriptionTamil, status
@@ -209,7 +209,7 @@ const insertTasksToSlaveCropCalendarDays = asyncHandler(async (req, res) => {
 
     // SQL query to copy tasks from CropCalendarDays to SlaveCropCalendarDays
     const sql = `
-      INSERT INTO slaveCropcalendardays (
+      INSERT INTO slavecropcalendardays (
         userId, cropCalendarId, taskIndex, days, taskTypeEnglish, taskTypeSinhala, taskTypeTamil,
         taskCategoryEnglish, taskCategorySinhala, taskCategoryTamil, taskEnglish, taskSinhala, taskTamil,
         taskDescriptionEnglish, taskDescriptionSinhala, taskDescriptionTamil, status
@@ -253,7 +253,7 @@ const getSlaveCropCalendarDaysByUserAndCrop = asyncHandler(async (req, res) => {
 
     const sql = `
       SELECT * 
-      FROM slaveCropcalendardays 
+      FROM slavecropcalendardays 
       WHERE userId = ? AND cropCalendarId = ?
     `;
 
@@ -287,7 +287,7 @@ const updateSlaveCropStatusById = asyncHandler(async (req, res) => {
 
     // Fetch the current task and its createdAt timestamp
     const fetchCurrentTaskSql =
-      "SELECT status, createdAt FROM slaveCropcalendardays WHERE id = ?";
+      "SELECT status, createdAt FROM slavecropcalendardays WHERE id = ?";
     db.query(fetchCurrentTaskSql, [id], (err, results) => {
       if (err) {
         console.error("Error executing fetch query:", err);
@@ -317,7 +317,7 @@ const updateSlaveCropStatusById = asyncHandler(async (req, res) => {
 
       // Proceed with updating the current task's status
       const updateSql =
-        "UPDATE slaveCropcalendardays SET status=?, createdAt=NOW() WHERE id=?";
+        "UPDATE slavecropcalendardays SET status=?, createdAt=NOW() WHERE id=?";
       db.query(updateSql, [status, id], (err, results) => {
         if (err) {
           console.error("Error executing update query:", err);
@@ -867,7 +867,7 @@ const updateCropCalendarStatus = asyncHandler(async (req, res) => {
 
     // First, get the current task details (taskIndex, status, cropCalendarId, userId, etc.)
     const getTaskSql =
-      "SELECT taskIndex, status, createdAt, cropCalendarId, userId FROM slaveCropcalendardays WHERE id = ?";
+      "SELECT taskIndex, status, createdAt, cropCalendarId, userId FROM slavecropcalendardays WHERE id = ?";
     db.query(getTaskSql, [id], (err, taskResults) => {
       if (err) {
         console.error("Error fetching task:", err);
@@ -903,7 +903,7 @@ const updateCropCalendarStatus = asyncHandler(async (req, res) => {
       if (status === "completed" && taskIndex > 1) {
         // Now filtering by userId and cropCalendarId
         const checkPreviousTasksSql = `
-          SELECT id, taskIndex, createdAt, status FROM slaveCropcalendardays 
+          SELECT id, taskIndex, createdAt, status FROM slavecropcalendardays 
           WHERE taskIndex < ? 
             AND cropCalendarId = ? 
             AND userId = ?
@@ -951,7 +951,7 @@ const updateCropCalendarStatus = asyncHandler(async (req, res) => {
 
           // All previous tasks are completed, and the 6-hour wait is satisfied, proceed with updating the status
           const updateSql =
-            "UPDATE slaveCropcalendardays SET status = ?, createdAt = CURRENT_TIMESTAMP WHERE id = ?";
+            "UPDATE slavecropcalendardays SET status = ?, createdAt = CURRENT_TIMESTAMP WHERE id = ?";
           db.query(updateSql, [status, id], (err, updateResults) => {
             if (err) {
               console.error("Error updating status:", err);
@@ -972,7 +972,7 @@ const updateCropCalendarStatus = asyncHandler(async (req, res) => {
       } else {
         // If status is not 'completed' or taskIndex is 1, just proceed with the normal update
         const updateSql =
-          "UPDATE slaveCropcalendardays SET status = ?, createdAt = CURRENT_TIMESTAMP WHERE id = ?";
+          "UPDATE slavecropcalendardays SET status = ?, createdAt = CURRENT_TIMESTAMP WHERE id = ?";
         db.query(updateSql, [status, id], (err, updateResults) => {
           if (err) {
             console.error("Error updating status:", err);
