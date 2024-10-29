@@ -71,11 +71,11 @@ exports.getCropById = asyncHandler(async (req, res) => {
     // Use the DAO to get crop details by crop ID
     const results = await cropDao.getCropById(cropId);
 
-    if (results[0].image) {
-      const base64Image = Buffer.from(results[0].image).toString('base64');
-      const mimeType = 'image/png'; // Adjust MIME type if necessary, depending on the image type
-      results[0].image = `data:${mimeType};base64,${base64Image}`;
-  }
+  //   if (results[0].image) {
+  //     const base64Image = Buffer.from(results[0].image).toString('base64');
+  //     const mimeType = 'image/png'; // Adjust MIME type if necessary, depending on the image type
+  //     results[0].image = `data:${mimeType};base64,${base64Image}`;
+  // }
 
     if (results.length === 0) {
       return res.status(404).json({
