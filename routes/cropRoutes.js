@@ -1,15 +1,4 @@
 const express = require("express");
-const {
-  getCropByCatogory,
-  CropCalanderFeed,
-  getCropById,
-  enroll,
-  OngoingCultivaionGetById,
-  insertTasksToSlaveCropCalendarDays,
-  getSlaveCropCalendarDaysByUserAndCrop,
-  updateSlaveCropStatusById,
-  updateCropCalendarStatus,
-} = require("../Controllers/cropController");
 const auth = require("../Middlewares/auth.middleware");
 const router = express.Router();
 const userCrop = require("../end-point/userCrop-ep");
