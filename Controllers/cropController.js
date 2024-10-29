@@ -88,7 +88,7 @@ const enroll = async (req, res) => {
     const check_enroll_crop_sql =
       "SELECT cropCalendar FROM ongoingcultivationscrops WHERE ongoingCultivationId = ?";
     const enroll_ongoingcultivationCrop_sql =
-      "INSERT INTO ongoingCultivationsCrops(ongoingCultivationId, cropCalendar) VALUES (?, ?)";
+      "INSERT INTO ongoingcultivationscrops(ongoingCultivationId, cropCalendar) VALUES (?, ?)";
     const enroll_slave_crop_sql = `
       INSERT INTO slavecropcalendardays (
         userId, cropCalendarId, taskIndex, days, taskTypeEnglish, taskTypeSinhala, taskTypeTamil,
