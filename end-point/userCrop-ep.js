@@ -4,15 +4,15 @@ const asyncHandler = require("express-async-handler");
 
 const cropDao = require("../dao/userCrop-dao");
 
-const {
-  getCropByCategorySchema,
-  getCropByIdSchema,
-  cropCalendarFeedSchema,
-  ongoingCultivationSchema,
-  enrollSchema,
-  getSlaveCropCalendarDaysSchema,
-  updateCropCalendarStatusSchema
-} = require("../validations/userCrop-validation");
+// const {
+//   getCropByCategorySchema,
+//   getCropByIdSchema,
+//   cropCalendarFeedSchema,
+//   ongoingCultivationSchema,
+//   enrollSchema,
+//   getSlaveCropCalendarDaysSchema,
+//   updateCropCalendarStatusSchema
+// } = require("../validations/userCrop-validation");
 
 const {
   checkOngoingCultivation,
@@ -64,7 +64,7 @@ exports.getCropByCategory = asyncHandler(async (req, res) => {
 exports.getCropById = asyncHandler(async (req, res) => {
   try {
     // Validate the cropId parameter
-    await getCropByIdSchema.validateAsync(req.params);
+    // await getCropByIdSchema.validateAsync(req.params);
 
     const cropId = req.params.id;
 
@@ -94,13 +94,13 @@ exports.getCropById = asyncHandler(async (req, res) => {
 exports.CropCalanderFeed = asyncHandler(async (req, res) => {
   try {
     // Validate the cropId parameter from URL
-    const { error } = cropCalendarFeedSchema.validate(req.params);
-    if (error) {
-      return res.status(400).json({
-        status: "error",
-        message: error.details[0].message, // Return validation error message
-      });
-    }
+    // const { error } = cropCalendarFeedSchema.validate(req.params);
+    // if (error) {
+    //   return res.status(400).json({
+    //     status: "error",
+    //     message: error.details[0].message, // Return validation error message
+    //   });
+    // }
 
     const userId = req.user.id; // Extract userId from token (assuming authentication middleware)
     const cropId = req.params.cropid; // Get cropId from URL parameters
@@ -138,14 +138,14 @@ exports.CropCalanderFeed = asyncHandler(async (req, res) => {
 exports.OngoingCultivaionGetById = asyncHandler(async (req, res) => {
   try {
     // Validate query parameters (like limit, offset) using Joi
-    const { error, value } = ongoingCultivationSchema.validate(req.query);
+    // const { error, value } = ongoingCultivationSchema.validate(req.query);
 
-    if (error) {
-      return res.status(400).json({
-        status: "error",
-        message: error.details[0].message, // Send validation error message
-      });
-    }
+    // if (error) {
+    //   return res.status(400).json({
+    //     status: "error",
+    //     message: error.details[0].message, // Send validation error message
+    //   });
+    // }
 
     const userId = req.user.id; // Extract userId from token
 
@@ -290,7 +290,7 @@ exports.enroll = asyncHandler(async (req, res) => {
 exports.getSlaveCropCalendarDaysByUserAndCrop = asyncHandler(async (req, res) => {
     try {
         // Validate the incoming request
-        await getSlaveCropCalendarDaysSchema.validateAsync(req.params);
+        // await getSlaveCropCalendarDaysSchema.validateAsync(req.params);
 
         const userId = req.user.id;
         const cropCalendarId = req.params.cropCalendarId;
@@ -329,7 +329,7 @@ exports.getSlaveCropCalendarDaysByUserAndCrop = asyncHandler(async (req, res) =>
 exports.updateCropCalendarStatus = asyncHandler(async (req, res) => {
   try {
       // Validate the request body
-      await updateCropCalendarStatusSchema.validateAsync(req.body);
+      // await updateCropCalendarStatusSchema.validateAsync(req.body);
 
       const { id, status } = req.body;
       const currentTime = new Date();
