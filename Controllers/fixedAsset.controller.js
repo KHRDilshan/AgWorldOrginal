@@ -347,11 +347,11 @@ exports.getFixedAssetsByCategory = (req, res) => {
     } else if (category === 'Machine and Vehicles') {
         sqlQuery = `SELECT fa.id, fa.category, mtfa.asset, mtfa.assetType FROM fixedasset fa
                     JOIN machtoolsfixedasset mtfa ON fa.id = mtfa.fixedAssetId
-                    WHERE fa.userId = ? AND fa.category = 'Machine and Vehicles' AND mtfa.category != 'Tool'`;
+                    WHERE fa.userId = ? AND fa.category = 'Machine and Vehicles' AND mtfa.category != 'Tools'`;
     } else if (category === 'Tools') {
         sqlQuery = `SELECT fa.id, fa.category, mtfa.asset, mtfa.assetType FROM fixedasset fa
                     JOIN machtoolsfixedasset mtfa ON fa.id = mtfa.fixedAssetId
-                    WHERE fa.userId = ? AND fa.category = 'Tools' AND mtfa.category = 'Tool'`;
+                    WHERE fa.userId = ? AND fa.category = 'Tools' AND mtfa.category = 'Tools'`;
     } else {
         return res.status(400).json({ message: 'Invalid category provided.' });
     }
