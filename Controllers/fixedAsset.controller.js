@@ -196,7 +196,7 @@ exports.addFixedAsset = (req, res) => {
             });
         });
     });
-}else if (category === 'Machine and Vehicles' || category === 'Tools') {
+} else if (category === 'Machine and Vehicles' || category === 'Tools') {
                 const machToolsSql = `INSERT INTO machtoolsfixedasset (fixedAssetId, asset, assetType, mentionOther, brand, numberOfUnits, unitPrice, totalPrice, warranty)
                                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
