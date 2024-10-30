@@ -113,72 +113,88 @@ exports.addFixedAsset = (req, res) => {
 
             // Handle category 'Land'
             } else if (category === 'Land') {
-                const landSql = `INSERT INTO landfixedasset (fixedAssetId, extentha, extentac, extentp, ownership, district, landFenced, perennialCrop)
-                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
-                db.query(landSql, [fixedAssetId, extentha, extentac, extentp, ownership, district, landFenced, perennialCrop], (landErr, landResult) => {
-                    if (landErr) {
-                        return db.rollback(() => {
-                            return res.status(500).json({ message: 'Error inserting into landfixedasset table', error: landErr });
-                        });
-                    }
+    // Prepare values for insertion, converting empty strings to null
+    const landValues = [
+        fixedAssetId,
+        extentha || null,
+        extentac || null,
+        extentp || null,
+        ownership || null,
+        district || null,
+        landFenced || null,
+        perennialCrop || null
+    ];
 
-                    const landAssetId = landResult.insertId;
+    console.log("Inserting into landfixedasset with values:", landValues); // Debugging log
 
-                    let ownershipSql = '';
-                    let ownershipParams = [];
+    const landSql = `INSERT INTO landfixedasset (fixedAssetId, extentha, extentac, extentp, ownership, district, landFenced, perennialCrop)
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    db.query(landSql, landValues, (landErr, landResult) => {
+        if (landErr) {
+            console.error('Error details:', landErr); // Log detailed error
+            return db.rollback(() => {
+                return res.status(500).json({ message: 'Error inserting into landfixedasset table', error: landErr });
+            });
+        }
 
-                    switch (ownership) {
-                        case 'Own':
-                            ownershipSql = `INSERT INTO ownershipownerfixedasset (landAssetId, issuedDate, estimateValue)
-                                            VALUES (?, ?, ?)`;
-                            ownershipParams = [landAssetId, formattedIssuedDate, estimateValue];
-                            break;
+        const landAssetId = landResult.insertId;
 
-                        case 'Lease':
-                            ownershipSql = `INSERT INTO ownershipleastfixedasset (landAssetId, startDate, durationYears, durationMonths, leastAmountAnnually)
-                                            VALUES (?, ?, ?, ?, ?)`;
-                            ownershipParams = [landAssetId, formattedStartDate, durationYears, durationMonths, leastAmountAnnually];
-                            break;
+        // Handle ownership conditions
+        let ownershipSql = '';
+        let ownershipParams = [];
 
-                        case 'Permited':
-                            ownershipSql = `INSERT INTO ownershippermitfixedasset (landAssetId, issuedDate, permitFeeAnnually)
-                                            VALUES (?, ?, ?)`;
-                            ownershipParams = [landAssetId, formattedIssuedDate, permitFeeAnnually];
-                            break;
+        switch (ownership) {
+            case 'Own':
+                ownershipSql = `INSERT INTO ownershipownerfixedasset (landAssetId, issuedDate, estimateValue)
+                                VALUES (?, ?, ?)`;
+                ownershipParams = [landAssetId, formattedIssuedDate, estimateValue || null];
+                break;
 
-                        case 'Shared':
-                            ownershipSql = `INSERT INTO ownershipsharedfixedasset (landAssetId, paymentAnnually)
-                                            VALUES (?, ?)`;
-                            ownershipParams = [landAssetId, paymentAnnually];
-                            break;
+            case 'Lease':
+                ownershipSql = `INSERT INTO ownershipleastfixedasset (landAssetId, startDate, durationYears, durationMonths, leastAmountAnnually)
+                                VALUES (?, ?, ?, ?, ?)`;
+                ownershipParams = [landAssetId, formattedStartDate, durationYears || null, durationMonths || null, leastAmountAnnually || null];
+                break;
 
-                        default:
-                            return db.rollback(() => {
-                                return res.status(400).json({ message: 'Invalid ownership type provided for land asset.' });
-                            });
-                    }
+            case 'Permited':
+                ownershipSql = `INSERT INTO ownershippermitfixedasset (landAssetId, issuedDate, permitFeeAnnually)
+                                VALUES (?, ?, ?)`;
+                ownershipParams = [landAssetId, formattedIssuedDate, permitFeeAnnually || null];
+                break;
 
-                    // Execute the ownership query for land
-                    db.query(ownershipSql, ownershipParams, (ownershipErr) => {
-                        if (ownershipErr) {
-                            return db.rollback(() => {
-                                return res.status(500).json({ message: 'Error inserting into ownership table for land', error: ownershipErr });
-                            });
-                        }
+            case 'Shared':
+                ownershipSql = `INSERT INTO ownershipsharedfixedasset (landAssetId, paymentAnnually)
+                                VALUES (?, ?)`;
+                ownershipParams = [landAssetId, paymentAnnually || null];
+                break;
 
-                        db.commit((commitErr) => {
-                            if (commitErr) {
-                                return db.rollback(() => {
-                                    return res.status(500).json({ message: 'Commit error', error: commitErr });
-                                });
-                            }
-                            return res.status(201).json({ message: 'Land fixed asset with ownership created successfully.' });
-                        });
-                    });
+            default:
+                return db.rollback(() => {
+                    return res.status(400).json({ message: 'Invalid ownership type provided for land asset.' });
                 });
+        }
 
-            // Handle categories 'Machine and Vehicles' or 'Tools'
-            } else if (category === 'Machine and Vehicles' || category === 'Tools') {
+        // Execute the ownership query
+        db.query(ownershipSql, ownershipParams, (ownershipErr) => {
+            if (ownershipErr) {
+                console.error('Error details:', ownershipErr); // Log detailed error
+                return db.rollback(() => {
+                    return res.status(500).json({ message: 'Error inserting into ownership table', error: ownershipErr });
+                });
+            }
+
+            // Commit the transaction after successful insertion
+            db.commit((commitErr) => {
+                if (commitErr) {
+                    return db.rollback(() => {
+                        return res.status(500).json({ message: 'Commit error', error: commitErr });
+                    });
+                }
+                return res.status(201).json({ message: 'Land fixed asset with ownership created successfully.' });
+            });
+        });
+    });
+} else if (category === 'Machine and Vehicles' || category === 'Tools') {
                 const machToolsSql = `INSERT INTO machtoolsfixedasset (fixedAssetId, asset, assetType, mentionOther, brand, numberOfUnits, unitPrice, totalPrice, warranty)
                                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
