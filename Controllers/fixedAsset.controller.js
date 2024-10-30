@@ -283,41 +283,41 @@ exports.addFixedAsset = (req, res) => {
     });
 };
 
-// Get fixed assets by category
-exports.getFixedAssetsByCategory = (req, res) => {
-    const userId = req.user.id;
-    const { category } = req.params;
+// // Get fixed assets by category
+// exports.getFixedAssetsByCategory = (req, res) => {
+//     const userId = req.user.id;
+//     const { category } = req.params;
 
-    let sqlQuery = '';
-    const queryParams = [userId];
+//     let sqlQuery = '';
+//     const queryParams = [userId];
 
-    if (category === 'Land') {
-        sqlQuery = `SELECT fa.id, fa.category, lfa.district FROM fixedasset fa
-                    JOIN landfixedasset lfa ON fa.id = lfa.fixedAssetId
-                    WHERE fa.userId = ? AND fa.category = 'Land'`;
-    } else if (category === 'Building and Infrastructures') {
-        sqlQuery = `SELECT fa.id, fa.category, bfa.type FROM fixedasset fa
-                    JOIN buildingfixedasset bfa ON fa.id = bfa.fixedAssetId
-                    WHERE fa.userId = ? AND fa.category = 'Building and Infrastructures'`;
-    } else if (category === 'Machine and Vehicles') {
-        sqlQuery = `SELECT fa.id, fa.category, mtfa.asset, mtfa.assetType FROM fixedasset fa
-                    JOIN machtoolsfixedasset mtfa ON fa.id = mtfa.fixedAssetId
-                    WHERE fa.userId = ? AND fa.category = 'Machine and Vehicles' AND mtfa.category != 'Tool'`;
-    } else if (category === 'Tools') {
-        sqlQuery = `SELECT fa.id, fa.category, mtfa.asset, mtfa.assetType FROM fixedasset fa
-                    JOIN machtoolsfixedasset mtfa ON fa.id = mtfa.fixedAssetId
-                    WHERE fa.userId = ? AND fa.category = 'Tools' AND mtfa.category = 'Tool'`;
-    } else {
-        return res.status(400).json({ message: 'Invalid category provided.' });
-    }
+//     if (category === 'Land') {
+//         sqlQuery = `SELECT fa.id, fa.category, lfa.district FROM fixedasset fa
+//                     JOIN landfixedasset lfa ON fa.id = lfa.fixedAssetId
+//                     WHERE fa.userId = ? AND fa.category = 'Land'`;
+//     } else if (category === 'Building and Infrastructures') {
+//         sqlQuery = `SELECT fa.id, fa.category, bfa.type FROM fixedasset fa
+//                     JOIN buildingfixedasset bfa ON fa.id = bfa.fixedAssetId
+//                     WHERE fa.userId = ? AND fa.category = 'Building and Infrastructures'`;
+//     } else if (category === 'Machine and Vehicles') {
+//         sqlQuery = `SELECT fa.id, fa.category, mtfa.asset, mtfa.assetType FROM fixedasset fa
+//                     JOIN machtoolsfixedasset mtfa ON fa.id = mtfa.fixedAssetId
+//                     WHERE fa.userId = ? AND fa.category = 'Machine and Vehicles' AND mtfa.category != 'Tool'`;
+//     } else if (category === 'Tools') {
+//         sqlQuery = `SELECT fa.id, fa.category, mtfa.asset, mtfa.assetType FROM fixedasset fa
+//                     JOIN machtoolsfixedasset mtfa ON fa.id = mtfa.fixedAssetId
+//                     WHERE fa.userId = ? AND fa.category = 'Tools' AND mtfa.category = 'Tool'`;
+//     } else {
+//         return res.status(400).json({ message: 'Invalid category provided.' });
+//     }
 
-    db.query(sqlQuery, queryParams, (queryErr, results) => {
-        if (queryErr) {
-            return res.status(500).json({ message: 'Error retrieving fixed assets', error: queryErr });
-        }
-        return res.status(200).json({ message: 'Fixed assets retrieved successfully.', data: results });
-    });
-};
+//     db.query(sqlQuery, queryParams, (queryErr, results) => {
+//         if (queryErr) {
+//             return res.status(500).json({ message: 'Error retrieving fixed assets', error: queryErr });
+//         }
+//         return res.status(200).json({ message: 'Fixed assets retrieved successfully.', data: results });
+//     });
+// };
 
 // Add similar logic for the `getFixedAssetDetailsById`, `updateFixedAsset`, and `deleteFixedAsset` functions.
 
@@ -336,24 +336,25 @@ exports.getFixedAssetsByCategory = (req, res) => {
         let queryParams = [userId]; // Initialize with userId
 
         // Determine which SQL to run based on category
-        if (category === 'Land') {
-            sqlQuery = `SELECT fa.id, fa.category, lfa.district
-                        FROM fixedasset fa
-                        JOIN landfixedasset lfa ON fa.id = lfa.fixedAssetId
-                        WHERE fa.userId = ?`;
-        } else if (category === 'Building and Infrastructures') {
-            sqlQuery = `SELECT fa.id, fa.category, bfa.type
-                        FROM fixedasset fa
-                        JOIN buildingfixedasset bfa ON fa.id = bfa.fixedAssetId
-                        WHERE fa.userId = ?`;
-        } else if (category === 'Machine and Vehicles' || category === 'Tools') {
-            sqlQuery = `SELECT fa.id, fa.category, mtfa.assetType
-                        FROM fixedasset fa
-                        JOIN machtoolsfixedasset mtfa ON fa.id = mtfa.fixedAssetId
-                        WHERE fa.userId = ?`;
-        } else {
-            return res.status(400).json({ message: 'Invalid category provided.' });
-        }
+         if (category === 'Land') {
+        sqlQuery = `SELECT fa.id, fa.category, lfa.district FROM fixedasset fa
+                    JOIN landfixedasset lfa ON fa.id = lfa.fixedAssetId
+                    WHERE fa.userId = ? AND fa.category = 'Land'`;
+    } else if (category === 'Building and Infrastructures') {
+        sqlQuery = `SELECT fa.id, fa.category, bfa.type FROM fixedasset fa
+                    JOIN buildingfixedasset bfa ON fa.id = bfa.fixedAssetId
+                    WHERE fa.userId = ? AND fa.category = 'Building and Infrastructures'`;
+    } else if (category === 'Machine and Vehicles') {
+        sqlQuery = `SELECT fa.id, fa.category, mtfa.asset, mtfa.assetType FROM fixedasset fa
+                    JOIN machtoolsfixedasset mtfa ON fa.id = mtfa.fixedAssetId
+                    WHERE fa.userId = ? AND fa.category = 'Machine and Vehicles' AND mtfa.category != 'Tool'`;
+    } else if (category === 'Tools') {
+        sqlQuery = `SELECT fa.id, fa.category, mtfa.asset, mtfa.assetType FROM fixedasset fa
+                    JOIN machtoolsfixedasset mtfa ON fa.id = mtfa.fixedAssetId
+                    WHERE fa.userId = ? AND fa.category = 'Tools' AND mtfa.category = 'Tool'`;
+    } else {
+        return res.status(400).json({ message: 'Invalid category provided.' });
+    }
 
         // Execute the query based on the category
         db.query(sqlQuery, queryParams, (queryErr, results) => {
