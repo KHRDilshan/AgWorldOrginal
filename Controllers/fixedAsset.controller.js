@@ -113,6 +113,9 @@ exports.addFixedAsset = (req, res) => {
 
             // Handle category 'Land'
             } else if (category === 'Land') {
+    // Convert 'Yes'/'No' to 1/0 for the 'landFenced' column
+    const landFencedValue = landFenced === 'Yes' ? 1 : landFenced === 'No' ? 0 : null;
+
     // Prepare values for insertion, converting empty strings to null
     const landValues = [
         fixedAssetId,
@@ -121,7 +124,7 @@ exports.addFixedAsset = (req, res) => {
         extentp || null,
         ownership || null,
         district || null,
-        landFenced || null,
+        landFencedValue, // Use the modified landFenced value
         perennialCrop || null
     ];
 
@@ -130,11 +133,17 @@ exports.addFixedAsset = (req, res) => {
     const landSql = `INSERT INTO landfixedasset (fixedAssetId, extentha, extentac, extentp, ownership, district, landFenced, perennialCrop)
                      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
+    // Execute the insertion query
     db.query(landSql, landValues, (landErr, landResult) => {
         if (landErr) {
-            console.error('Error details:', landErr); // Log detailed error
+            console.error('MySQL Error Code:', landErr.code);
+            console.error('MySQL Error Message:', landErr.sqlMessage);
+            console.error('Error SQL:', landErr.sql);
             return db.rollback(() => {
-                return res.status(500).json({ message: 'Error inserting into landfixedasset table', error: landErr });
+                return res.status(500).json({ 
+                    message: 'Error inserting into landfixedasset table', 
+                    error: { code: landErr.code, message: landErr.sqlMessage } 
+                });
             });
         }
 
@@ -196,7 +205,7 @@ exports.addFixedAsset = (req, res) => {
             });
         });
     });
-} else if (category === 'Machine and Vehicles' || category === 'Tools') {
+}else if (category === 'Machine and Vehicles' || category === 'Tools') {
                 const machToolsSql = `INSERT INTO machtoolsfixedasset (fixedAssetId, asset, assetType, mentionOther, brand, numberOfUnits, unitPrice, totalPrice, warranty)
                                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
