@@ -181,6 +181,8 @@ exports.addFixedAsset = (req, res) => {
             } else if (category === 'Machine and Vehicles' || category === 'Tools') {
                 const machToolsSql = `INSERT INTO machtoolsfixedasset (fixedAssetId, asset, assetType, mentionOther, brand, numberOfUnits, unitPrice, totalPrice, warranty)
                                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+                // Insert into machtoolsfixedasset table
                 db.query(machToolsSql, [fixedAssetId, asset, assetType, mentionOther, brand, numberOfUnits, unitPrice, totalPrice, warranty], (machToolsErr, machToolsResult) => {
                     if (machToolsErr) {
                         return db.rollback(() => {
@@ -188,9 +190,11 @@ exports.addFixedAsset = (req, res) => {
                         });
                     }
 
-                    const machToolsId = machToolsResult.insertId;
+                    const machToolsId = machToolsResult.insertId; // Get the inserted machToolsId
 
+                    // Check warranty status
                     if (warrantystatus === 'yes') {
+                        // Insert into machtoolsfixedassetwarranty table
                         const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus)
                                                       VALUES (?, ?, ?, ?)`;
                         db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
@@ -200,6 +204,28 @@ exports.addFixedAsset = (req, res) => {
                                 });
                             }
 
+                            // Commit the transaction after successful insertions
+                            db.commit((commitErr) => {
+                                if (commitErr) {
+                                    return db.rollback(() => {
+                                        return res.status(500).json({ message: 'Commit error', error: commitErr });
+                                    });
+                                }
+                                return res.status(201).json({ message: 'Machine and tools fixed asset with warranty created successfully.' });
+                            });
+                        });
+                    } else if (warrantystatus === 'no') {
+
+                        const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus)
+                                                      VALUES (?, ?, ?, ?)`;
+                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
+                            if (warrantyErr) {
+                                return db.rollback(() => {
+                                    return res.status(500).json({ message: 'Error inserting into machtoolsfixedassetwarranty table', error: warrantyErr });
+                                });
+                            }
+
+                            // Commit the transaction after successful insertions
                             db.commit((commitErr) => {
                                 if (commitErr) {
                                     return db.rollback(() => {
@@ -210,7 +236,8 @@ exports.addFixedAsset = (req, res) => {
                             });
                         });
 
-                    } else if (warrantystatus === 'no') {
+                    } else {
+                        // If no warranty, just commit the transaction
                         db.commit((commitErr) => {
                             if (commitErr) {
                                 return db.rollback(() => {
@@ -219,15 +246,9 @@ exports.addFixedAsset = (req, res) => {
                             }
                             return res.status(201).json({ message: 'Machine and tools fixed asset created successfully without warranty.' });
                         });
-
-                    } else {
-                        return db.rollback(() => {
-                            return res.status(400).json({ message: 'Invalid warranty status provided.' });
-                        });
                     }
                 });
-
-            } else {
+            }else {
                 return db.rollback(() => {
                     return res.status(400).json({ message: 'Invalid category provided.' });
                 });
