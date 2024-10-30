@@ -129,6 +129,7 @@ exports.addFixedAsset = (req, res) => {
 
     const landSql = `INSERT INTO landfixedasset (fixedAssetId, extentha, extentac, extentp, ownership, district, landFenced, perennialCrop)
                      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+
     db.query(landSql, landValues, (landErr, landResult) => {
         if (landErr) {
             console.error('Error details:', landErr); // Log detailed error
@@ -138,8 +139,9 @@ exports.addFixedAsset = (req, res) => {
         }
 
         const landAssetId = landResult.insertId;
+        console.log("Land asset id:", landAssetId);
 
-        // Handle ownership conditions
+        // Insert into appropriate ownership table based on ownership type
         let ownershipSql = '';
         let ownershipParams = [];
 
@@ -179,7 +181,7 @@ exports.addFixedAsset = (req, res) => {
             if (ownershipErr) {
                 console.error('Error details:', ownershipErr); // Log detailed error
                 return db.rollback(() => {
-                    return res.status(500).json({ message: 'Error inserting into ownership table', error: ownershipErr });
+                    return res.status(500).json({ message: 'Error inserting into ownership table for land asset', error: ownershipErr });
                 });
             }
 
@@ -194,7 +196,7 @@ exports.addFixedAsset = (req, res) => {
             });
         });
     });
-} else if (category === 'Machine and Vehicles' || category === 'Tools') {
+}else if (category === 'Machine and Vehicles' || category === 'Tools') {
                 const machToolsSql = `INSERT INTO machtoolsfixedasset (fixedAssetId, asset, assetType, mentionOther, brand, numberOfUnits, unitPrice, totalPrice, warranty)
                                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
