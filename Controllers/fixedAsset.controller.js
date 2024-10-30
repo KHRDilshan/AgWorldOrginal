@@ -206,7 +206,7 @@ exports.addFixedAsset = (req, res) => {
 
             }else if (category === 'Machine and Vehicles' || category === 'Tools') {
                 const machToolsSql = `INSERT INTO machtoolsfixedasset (fixedAssetId, asset, assetType, mentionOther, brand, numberOfUnits, unitPrice, totalPrice, warranty, category )
-                                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+                                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
                 // Insert into machtoolsfixedasset table
                 db.query(machToolsSql, [fixedAssetId, asset, assetType, mentionOther, brand, numberOfUnits, unitPrice, totalPrice, warranty, category], (machToolsErr, machToolsResult) => {
@@ -222,7 +222,7 @@ exports.addFixedAsset = (req, res) => {
                     if (warrantystatus === 'yes') {
                         // Insert into machtoolsfixedassetwarranty table
                         const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus, category)
-                                                      VALUES (?, ?, ?, ?)`;
+                                                      VALUES (?, ?, ?, ?, ?)`;
                         db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus, category], (warrantyErr) => {
                             if (warrantyErr) {
                                 return db.rollback(() => {
@@ -243,7 +243,7 @@ exports.addFixedAsset = (req, res) => {
                     } else if (warrantystatus === 'no') {
 
                         const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus, category)
-                                                      VALUES (?, ?, ?, ?)`;
+                                                      VALUES (?, ?, ?, ?, ?)`;
                         db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus, category], (warrantyErr) => {
                             if (warrantyErr) {
                                 return db.rollback(() => {
