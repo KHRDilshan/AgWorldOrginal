@@ -53,51 +53,69 @@ exports.addFixedAsset = (req, res) => {
     const formattedStartDate = startDate ? formatDate(startDate) : null;
 
 
-    // Start a transaction
-db.beginTransaction((err) => {
-    if (err) {
-        return res.status(500).json({ message: 'Transaction error', error: err });
-    }
+    db.beginTransaction((err) => {
+        if (err) return res.status(500).json({ message: 'Transaction error', error: err });
 
-    // Insert into fixedasset table
-    const fixedAssetSql = `INSERT INTO fixedasset (userId, category) VALUES (?, ?)`;
-    db.query(fixedAssetSql, [userId, category], (fixedAssetErr, fixedAssetResult) => {
-        if (fixedAssetErr) {
-            return db.rollback(() => {
-                return res.status(500).json({ message: 'Error inserting into fixedasset table', error: fixedAssetErr });
-            });
-        }
+        // Insert into fixedasset table
+        const fixedAssetSql = `INSERT INTO fixedasset (userId, category) VALUES (?, ?)`;
+        db.query(fixedAssetSql, [userId, category], (fixedAssetErr, fixedAssetResult) => {
+            if (fixedAssetErr) {
+                return db.rollback(() => {
+                    return res.status(500).json({ message: 'Error inserting into fixedasset table', error: fixedAssetErr });
+                });
+            }
 
-        const fixedAssetId = fixedAssetResult.insertId;
-        console.log("Fixed asset id:", fixedAssetId);
+            const fixedAssetId = fixedAssetResult.insertId;
+            console.log("Fixed asset id:", fixedAssetId);
 
-        // Handle category 'Building and Infrastructures'
-        if (category === 'Building and Infrastructures') {
-            const buildingSql = `INSERT INTO buildingfixedasset (fixedAssetId, type, floorArea, ownership, generalCondition, district)
-                                 VALUES (?, ?, ?, ?, ?, ?)`;
+            // Handle category 'Building and Infrastructures'
+            if (category === 'Building and Infrastructures') {
+                const buildingSql = `INSERT INTO buildingfixedasset (fixedAssetId, type, floorArea, ownership, generalCondition, district)
+                                     VALUES (?, ?, ?, ?, ?, ?)`;
 
-            db.query(buildingSql, [fixedAssetId, type, floorArea, ownership, generalCondition, district], (buildingErr, buildingResult) => {
-                if (buildingErr) {
-                    return db.rollback(() => {
-                        return res.status(500).json({ message: 'Error inserting into buildingfixedasset table', error: buildingErr });
-                    });
-                }
+                db.query(buildingSql, [fixedAssetId, type, floorArea, ownership, generalCondition, district], (buildingErr, buildingResult) => {
+                    if (buildingErr) {
+                        return db.rollback(() => {
+                            return res.status(500).json({ message: 'Error inserting into buildingfixedasset table', error: buildingErr });
+                        });
+                    }
 
-                const buildingAssetId = buildingResult.insertId;
-                console.log("Building asset id:", buildingAssetId);
+                    const buildingAssetId = buildingResult.insertId;
+                    console.log("Building asset id:", buildingAssetId);
 
-                // Ownership condition handling
-                if (ownership === 'Own Building (with title ownership)') {
-                    const formattedIssuedDate = new Date(issuedDate).toISOString().split('T')[0];
+                    // Ownership condition handling
+                    let ownershipSql = '';
+                    let ownershipParams = [];
 
-                    const ownershipSql = `INSERT INTO ownershipownerfixedasset (buildingAssetId, issuedDate, estimateValue)
-                                          VALUES (?, ?, ?)`;
-
-                    db.query(ownershipSql, [buildingAssetId, formattedIssuedDate, estimateValue], (ownershipErr, ownershipResult) => {
-                        if (ownershipErr) {
-                            console.error('Error details:', ownershipErr);
+                    switch (ownership) {
+                        case 'Own Building (with title ownership)':
+                            ownershipSql = `INSERT INTO ownershipownerfixedasset (buildingAssetId, issuedDate, estimateValue) VALUES (?, ?, ?)`;
+                            ownershipParams = [buildingAssetId, formattedIssuedDate, estimateValue];
+                            break;
+                        case 'Leased Building':
+                            ownershipSql = `INSERT INTO ownershipleastfixedasset (buildingAssetId, startDate, durationYears, durationMonths, leastAmountAnnually) 
+                                            VALUES (?, ?, ?, ?, ?)`;
+                            ownershipParams = [buildingAssetId, formattedStartDate, durationYears, durationMonths, leastAmountAnnually];
+                            break;
+                        case 'Permit Building':
+                            ownershipSql = `INSERT INTO ownershippermitfixedasset (buildingAssetId, issuedDate, permitFeeAnnually) VALUES (?, ?, ?)`;
+                            ownershipParams = [buildingAssetId, formattedIssuedDate, permitFeeAnnually];
+                            break;
+                        case 'Shared / No Ownership':
+                            ownershipSql = `INSERT INTO ownershipsharedfixedasset (buildingAssetId, paymentAnnually) VALUES (?, ?)`;
+                            ownershipParams = [buildingAssetId, paymentAnnually];
+                            break;
+                        default:
                             return db.rollback(() => {
-                                return res.status(500).json({ message: 'Error inserting into ownershipownerfixedasset table', error: ownershipErr });
+                                return res.status(400).json({ message: 'Invalid ownership type provided for building asset.' });
+                            });
+                    }
+
+                    // Execute ownership query
+                    db.query(ownershipSql, ownershipParams, (ownershipErr) => {
+                        if (ownershipErr) {
+                            return db.rollback(() => {
+                                return res.status(500).json({ message: 'Error inserting into ownership table', error: ownershipErr });
                             });
                         }
 
@@ -111,93 +129,16 @@ db.beginTransaction((err) => {
                             return res.status(201).json({ message: 'Building fixed asset with ownership created successfully.' });
                         });
                     });
-
-                } else if (ownership === 'Leased Building') {
-                    const formattedStartDate = new Date(startDate).toISOString().split('T')[0];
-
-                    const leaseSql = `INSERT INTO ownershipleastfixedasset (buildingAssetId, startDate, durationYears, durationMonths, leastAmountAnnually)
-                                      VALUES (?, ?, ?, ?, ?)`;
-
-                    db.query(leaseSql, [buildingAssetId, formattedStartDate, durationYears, durationMonths, leastAmountAnnually], (leaseErr) => {
-                        if (leaseErr) {
-                            console.error('Error details:', leaseErr);
-                            return db.rollback(() => {
-                                return res.status(500).json({ message: 'Error inserting into ownershipleastfixedasset table', error: leaseErr });
-                            });
-                        }
-
-                        db.commit((commitErr) => {
-                            if (commitErr) {
-                                return db.rollback(() => {
-                                    return res.status(500).json({ message: 'Commit error', error: commitErr });
-                                });
-                            }
-                            return res.status(201).json({ message: 'Building fixed asset with lease ownership created successfully.' });
-                        });
-                    });
-
-                } else if (ownership === 'Permit Building') {
-                    const formattedIssuedDate = new Date(issuedDate).toISOString().split('T')[0];
-
-                    const permitSql = `INSERT INTO ownershippermitfixedasset (buildingAssetId, issuedDate, permitFeeAnnually)
-                                       VALUES (?, ?, ?)`;
-
-                    db.query(permitSql, [buildingAssetId, formattedIssuedDate, permitFeeAnnually], (permitErr) => {
-                        if (permitErr) {
-                            console.error('Error details:', permitErr);
-                            return db.rollback(() => {
-                                return res.status(500).json({ message: 'Error inserting into ownershippermitfixedasset table', error: permitErr });
-                            });
-                        }
-
-                        db.commit((commitErr) => {
-                            if (commitErr) {
-                                return db.rollback(() => {
-                                    return res.status(500).json({ message: 'Commit error', error: commitErr });
-                                });
-                            }
-                            return res.status(201).json({ message: 'Building fixed asset with permit ownership created successfully.' });
-                        });
-                    });
-
-                } else if (ownership === 'Shared / No Ownership') {
-                    const sharedSql = `INSERT INTO ownershipsharedfixedasset (buildingAssetId, paymentAnnually)
-                                       VALUES (?, ?)`;
-
-                    db.query(sharedSql, [buildingAssetId, paymentAnnually], (sharedErr) => {
-                        if (sharedErr) {
-                            console.error('Error details:', sharedErr);
-                            return db.rollback(() => {
-                                return res.status(500).json({ message: 'Error inserting into ownershipsharedfixedasset table', error: sharedErr });
-                            });
-                        }
-
-                        db.commit((commitErr) => {
-                            if (commitErr) {
-                                return db.rollback(() => {
-                                    return res.status(500).json({ message: 'Commit error', error: commitErr });
-                                });
-                            }
-                            return res.status(201).json({ message: 'Building fixed asset with shared ownership created successfully.' });
-                        });
-                    });
-
-                } else {
-                    return db.rollback(() => {
-                        return res.status(400).json({ message: 'Invalid ownership type provided for building asset.' });
-                    });
-                }
-            });
-        } else {
-            // Handle other categories as needed
-            return db.rollback(() => {
-                return res.status(400).json({ message: 'Invalid category provided.' });
-            });
-        }
+                });
+            } else {
+                // Rollback for invalid categories
+                return db.rollback(() => {
+                    return res.status(400).json({ message: 'Invalid category provided.' });
+                });
+            }
+        });
     });
-});
-
-
+};
 //------------------------------------------------------------------------------------------------------------------------------------
 
 exports.getFixedAssetsByCategory = (req, res) => {
