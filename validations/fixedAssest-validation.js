@@ -38,71 +38,43 @@ exports.deleteFixedAssetSchema = Joi.object({
 
 // Validation schema for adding a fixed asset
 exports.addFixedAssetSchema = Joi.object({
-  category: Joi.string()
-    .valid('Building and Infrastructures', 'Land', 'Machine and Vehicles', 'Tools')
-    .required()
-    .label("Category"),
-  
+  asset: Joi.string().label("Asset"),
+  assetType: Joi.string().label("Asset Type"),
+  assetname: Joi.string().label("Asset Name"),
+  brand: Joi.string().label("Brand"),
+  category: Joi.string().valid('Building and Infrastructures','Land','Machine and Vehicles','Tools').required().label("Category"),
+  district: Joi.string().label("District"),
+  durationMonths: Joi.alternatives().try(Joi.number(),Joi.string()).label("Duration in Months"),
+  durationYears: Joi.alternatives().try(Joi.number(),Joi.string()).label("Duration in Years"),
+  estimateValue: Joi.number().label("Estimated Value"),
+  expireDate: Joi.date().label("Expire Date"),
+  extentac: Joi.alternatives().try(Joi.number(),Joi.string()).label("Extent (ac)"),
+  extentha: Joi.alternatives().try(Joi.number(),Joi.string()).label("Extent (ha)"),
+  extentp: Joi.alternatives().try(Joi.number(),Joi.string()).label("Extent (p)"),
+  floorArea: Joi.number().label("Floor Area"),
+  generalCondition: Joi.string().label("General Condition"),
+  issuedDate: Joi.date().label("Issued Date"),
+  landFenced: Joi.alternatives().try(Joi.boolean(),Joi.string().valid("yes","no")).label("Land Fenced"),
+  leastAmountAnnually: Joi.alternatives().try(Joi.number(),Joi.string()).label("Lease Amount Annually"),
+  mentionOther: Joi.string().label("Other Mentions"),
+  numberOfUnits: Joi.alternatives().try(Joi.number(),Joi.string()).label("Number of Units"),
   ownership: Joi.string().required().label("Ownership"),
-  
-  type: Joi.string().optional().label("Type"),
-  
-  floorArea: Joi.number().optional().label("Floor Area"),
-  
-  generalCondition: Joi.string().optional().label("General Condition"),
-  
-  district: Joi.string().optional().label("District"),
-  
-  extentha: Joi.number().optional().label("Extent (ha)"),
-  
-  extentac: Joi.number().optional().label("Extent (ac)"),
-  
-  extentp: Joi.number().optional().label("Extent (p)"),
-  
-  landFenced: Joi.boolean().optional().label("Land Fenced"),
-  
-  perennialCrop: Joi.string().optional().label("Perennial Crop"),
-  
-  asset: Joi.string().optional().label("Asset"),
-  
-  assetType: Joi.string().optional().label("Asset Type"),
-  
-  mentionOther: Joi.string().optional().label("Other Mentions"),
-  
-  brand: Joi.string().optional().label("Brand"),
-  
-  numberOfUnits: Joi.number().optional().label("Number of Units"),
-  
-  unitPrice: Joi.number().optional().label("Unit Price"),
-  
-  totalPrice: Joi.number().optional().label("Total Price"),
-  
-  warranty: Joi.boolean().optional().label("Warranty"),
-  
-  issuedDate: Joi.date().optional().label("Issued Date"),
-  
-  purchaseDate: Joi.date().optional().label("Purchase Date"),
-  
-  expireDate: Joi.date().optional().label("Expire Date"),
-  
-  warrantystatus: Joi.string()
-    .valid('yes', 'no')
-    .optional()
-    .label("Warranty Status"),
-  
-  startDate: Joi.date().optional().label("Start Date"),
-  
-  durationYears: Joi.number().optional().label("Duration in Years"),
-  
-  durationMonths: Joi.number().optional().label("Duration in Months"),
-  
-  leastAmountAnnually: Joi.number().optional().label("Lease Amount Annually"),
-  
-  permitFeeAnnually: Joi.number().optional().label("Permit Fee Annually"),
-  
-  paymentAnnually: Joi.number().optional().label("Payment Annually"),
-  
-  estimateValue: Joi.number().optional().label("Estimated Value")
+  paymentAnnually: Joi.alternatives().try(Joi.number(),Joi.string()).label("Payment Annually"),
+  perennialCrop: Joi.alternatives().try(Joi.boolean(),Joi.string().valid("yes","no")).label("Perennial Crop"),
+  permitFeeAnnually: Joi.alternatives().try(Joi.number(),Joi.string()).label("Permit Fee Annually"),
+  purchaseDate: Joi.date().label("Purchase Date"),
+  startDate: Joi.date().label("Start Date"),
+  toolbrand: Joi.string().label("Tool Brand"),
+  totalPrice: Joi.number().label("Total Price"),
+  type: Joi.string().label("Type"),
+  unitPrice: Joi.alternatives().try(Joi.number(),Joi.string()).label("Unit Price"),
+  warranty: Joi.alternatives().try(Joi.boolean(),Joi.string().valid("yes","no")).label("Warranty"),
+  warrantystatus: Joi.array().items(
+    Joi.object({
+      key: Joi.string().required(),
+      value: Joi.alternatives().try(Joi.boolean(),Joi.string().valid("yes","no"))
+    })
+  ).label("Warranty Status")
 });
 
 
