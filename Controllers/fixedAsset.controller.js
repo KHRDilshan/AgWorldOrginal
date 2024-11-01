@@ -14,13 +14,15 @@ const formatDate = (dateString) => {
 // Add a fixed asset
 exports.addFixedAsset = (req, res) => {
       const { error } = addFixedAssetSchema.validate(req.body);
+    // if (error) {
+    //     console.log("Validation Error Details:", error.details);
+    //     return res.status(400).json({ message: 'Validation error', errors: error.details });
+    // }
     if (error) {
-        // console.log("Validation Error Details:", error.details);
-        // return res.status(400).json({ message: 'Validation error', errors: error.details });
-        const errorMessages = error.details.map(detail => detail.message);
-        console.log("Validation Error Messages:", errorMessages);  // Log error messages
-        return res.status(400).json({ message: errorMessages, errors: errorMessages }
-    }
+    const errorMessages = error.details.map(detail => detail.message).join(', ');
+    console.log("Validation Error Messages:", errorMessages);  // Log error messages
+    return res.status(400).json({ message: errorMessages });
+}
     const userId = req.user.id;
     const {
         category, ownership, type, floorArea, generalCondition, district,
