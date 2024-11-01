@@ -15,6 +15,7 @@ const formatDate = (dateString) => {
 exports.addFixedAsset = (req, res) => {
       const { error } = addFixedAssetSchema.validate(req.body);
     if (error) {
+        console.log("Validation Error Details:", error.details);
         return res.status(400).json({ message: 'Validation error', errors: error.details });
     }
     const userId = req.user.id;
