@@ -13,6 +13,10 @@ const formatDate = (dateString) => {
 
 // Add a fixed asset
 exports.addFixedAsset = (req, res) => {
+      const { error } = addFixedAssetSchema(req.body);
+    if (error) {
+        return res.status(400).json({ message: 'Validation error', errors: error.details });
+    }
     const userId = req.user.id;
     const {
         category, ownership, type, floorArea, generalCondition, district,
