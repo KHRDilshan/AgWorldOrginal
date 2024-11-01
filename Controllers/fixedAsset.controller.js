@@ -338,7 +338,7 @@ exports.addFixedAsset = (req, res) => {
                 });
             }
         });
-    });
+   
 };
 
 // // Get fixed assets by category
