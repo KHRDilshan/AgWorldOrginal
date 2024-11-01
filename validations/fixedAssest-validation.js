@@ -42,7 +42,7 @@ exports.addFixedAssetSchema = Joi.object({
   assetType: Joi.string().label("Asset Type"),
   assetname: Joi.string().label("Asset Name"),
   brand: Joi.string().label("Brand"),
-  category: Joi.string().valid('Building and Infrastructures','Land','Machine and Vehicles','Tools').required().label("Category"),
+  category: Joi.string().valid('Building and Infrastructures','Land','Machine and Vehicles','Tools').label("Category"),
   district: Joi.string().label("District"),
   durationMonths: Joi.alternatives().try(Joi.number(),Joi.string()).label("Duration in Months"),
   durationYears: Joi.alternatives().try(Joi.number(),Joi.string()).label("Duration in Years"),
@@ -58,7 +58,7 @@ exports.addFixedAssetSchema = Joi.object({
   leastAmountAnnually: Joi.alternatives().try(Joi.number(),Joi.string()).label("Lease Amount Annually"),
   mentionOther: Joi.string().label("Other Mentions"),
   numberOfUnits: Joi.alternatives().try(Joi.number(),Joi.string()).label("Number of Units"),
-  ownership: Joi.string().required().label("Ownership"),
+  ownership: Joi.string().label("Ownership"),
   paymentAnnually: Joi.alternatives().try(Joi.number(),Joi.string()).label("Payment Annually"),
   perennialCrop: Joi.alternatives().try(Joi.boolean(),Joi.string().valid("yes","no")).label("Perennial Crop"),
   permitFeeAnnually: Joi.alternatives().try(Joi.number(),Joi.string()).label("Permit Fee Annually"),
@@ -71,7 +71,7 @@ exports.addFixedAssetSchema = Joi.object({
   warranty: Joi.alternatives().try(Joi.boolean(),Joi.string().valid("yes","no")).label("Warranty"),
   warrantystatus: Joi.array().items(
     Joi.object({
-      key: Joi.string().required(),
+      key: Joi.string(),
       value: Joi.alternatives().try(Joi.boolean(),Joi.string().valid("yes","no"))
     })
   ).label("Warranty Status")
