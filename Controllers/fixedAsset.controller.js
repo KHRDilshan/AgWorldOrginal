@@ -19,10 +19,11 @@ exports.addFixedAsset = (req, res) => {
     //     return res.status(400).json({ message: 'Validation error', errors: error.details });
     // }
     // Assuming you receive the error response in a variable called `error`
-if (error.response && error.response.data && error.response.data.message) {
-    alert(error.response.data.message);  // Display only the message from the server response
-} else {
-    alert("An unexpected error occurred");  // Fallback for any other unexpected errors
+    // Only respond with the error message
+if (error) {
+    const errorMessages = error.details.map(detail => detail.message).join(', ');
+    console.log("Validation Error Messages:", errorMessages);  // Log error messages
+    return res.status(400).json({ message: errorMessages });
 }
 
     const userId = req.user.id;
