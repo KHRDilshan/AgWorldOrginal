@@ -13,7 +13,7 @@ const formatDate = (dateString) => {
 
 // Add a fixed asset
 exports.addFixedAsset = (req, res) => {
-     const { error } =addFixedAssetSchema(req.body);
+      const { error } = addFixedAssetSchema.validate(req.body);
     if (error) {
         return res.status(400).json({ message: 'Validation error', errors: error.details });
     }
