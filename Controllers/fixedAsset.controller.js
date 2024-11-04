@@ -33,7 +33,7 @@ exports.addFixedAsset = (req, res) => {
         asset, assetType, mentionOther, brand, numberOfUnits, unitPrice,
         totalPrice, warranty, issuedDate, purchaseDate, expireDate,
         warrantystatus, startDate, durationYears, durationMonths, leastAmountAnnually,
-        permitFeeAnnually, paymentAnnually, estimateValue
+        permitFeeAnnually, paymentAnnually, estimateValue, landownership
     } = req.body;
 
     const formattedIssuedDate = formatDate(issuedDate);
@@ -131,7 +131,7 @@ exports.addFixedAsset = (req, res) => {
             } else if (category === 'Land') {
                 const landSql = `INSERT INTO landfixedasset (fixedAssetId, extentha, extentac, extentp, ownership, district, landFenced, perennialCrop)
                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
-                db.query(landSql, [fixedAssetId, extentha, extentac, extentp, ownership, district, landFenced, perennialCrop], (landErr, landResult) => {
+                db.query(landSql, [fixedAssetId, extentha, extentac, extentp, landownership, district, landFenced, perennialCrop], (landErr, landResult) => {
                     if (landErr) {
                         return db.rollback(() => {
                             return res.status(500).json({ message: 'Error inserting into landfixedasset table', error: landErr });
