@@ -46,7 +46,7 @@ exports.addFixedAssetSchema = Joi.object({
   district: Joi.string().allow('').label("District"),
   durationMonths: Joi.alternatives().try(Joi.number(), Joi.string().allow('')).label("Duration in Months"),
   durationYears: Joi.alternatives().try(Joi.number(), Joi.string().allow('')).label("Duration in Years"),
-  estimateValue: Joi.number().allow(null).label("Estimated Value"),
+  estimateValue: Joi.alternatives().try(Joi.number(), Joi.string().allow('')).label("Estimated Value"),
   expireDate: Joi.date().allow(null).label("Expire Date"),
   extentac: Joi.alternatives().try(Joi.number(), Joi.string().allow('')).label("Extent (ac)"),
   extentha: Joi.alternatives().try(Joi.number(), Joi.string().allow('')).label("Extent (ha)"),
