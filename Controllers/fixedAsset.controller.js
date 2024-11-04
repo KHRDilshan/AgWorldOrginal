@@ -141,7 +141,7 @@ exports.addFixedAsset = (req, res) => {
                     const landAssetId = landResult.insertId;
 
                     // Handle ownership conditions
-                    if (ownership === 'Own') {
+                    if (landownership === 'Own') {
                         const ownershipOwnerSql = `INSERT INTO ownershipownerfixedasset (landAssetId, issuedDate, estimateValue)
                                                    VALUES (?, ?, ?)`;
                         db.query(ownershipOwnerSql, [landAssetId, formattedIssuedDate, estimateValue], (ownershipErr) => {
@@ -159,7 +159,7 @@ exports.addFixedAsset = (req, res) => {
                                 return res.status(201).json({ message: 'Land fixed asset with ownership created successfully.' });
                             });
                         });
-                    } else if (ownership === 'Lease') {
+                    } else if (landownership === 'Lease') {
                         const ownershipLeaseSql = `INSERT INTO ownershipleastfixedasset (landAssetId, startDate, durationYears,durationMonths, leastAmountAnnually)
                                                    VALUES (?, ?, ?, ?,?)`;
                         db.query(ownershipLeaseSql, [landAssetId, formattedStartDate, durationYears,durationMonths, leastAmountAnnually], (leaseErr) => {
@@ -177,7 +177,7 @@ exports.addFixedAsset = (req, res) => {
                                 return res.status(201).json({ message: 'Land fixed asset with lease ownership created successfully.' });
                             });
                         });
-                    } else if (ownership === 'Permited') {
+                    } else if (landownership === 'Permited') {
                         const ownershipPermitSql = `INSERT INTO ownershippermitfixedasset (landAssetId, issuedDate, permitFeeAnnually)
                                                     VALUES (?, ?, ?)`;
                         db.query(ownershipPermitSql, [landAssetId, formattedIssuedDate, permitFeeAnnually], (permitErr) => {
@@ -195,7 +195,7 @@ exports.addFixedAsset = (req, res) => {
                                 return res.status(201).json({ message: 'Land fixed asset with permit ownership created successfully.' });
                             });
                         });
-                    } else if (ownership === 'Shared') {
+                    } else if (landownership === 'Shared') {
                         const ownershipSharedSql = `INSERT INTO ownershipsharedfixedasset (landAssetId, paymentAnnually)
                                                     VALUES (?, ?)`;
                         db.query(ownershipSharedSql, [landAssetId, paymentAnnually], (sharedErr) => {
