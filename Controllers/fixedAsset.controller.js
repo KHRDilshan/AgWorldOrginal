@@ -33,7 +33,7 @@ exports.addFixedAsset = (req, res) => {
         asset, assetType, mentionOther, brand, numberOfUnits, unitPrice,
         totalPrice, warranty, issuedDate, purchaseDate, expireDate,
         warrantystatus, startDate, durationYears, durationMonths, leastAmountAnnually,
-        permitFeeAnnually, paymentAnnually, estimateValue, landownership
+        permitFeeAnnually, paymentAnnually, estimateValue, landownership, assetname
     } = req.body;
 
     const formattedIssuedDate = formatDate(issuedDate);
