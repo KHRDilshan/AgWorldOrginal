@@ -51,7 +51,7 @@ exports.addFixedAssetSchema = Joi.object({
   extentac: Joi.alternatives().try(Joi.number(), Joi.string().allow('')).label("Extent (ac)"),
   extentha: Joi.alternatives().try(Joi.number(), Joi.string().allow('')).label("Extent (ha)"),
   extentp: Joi.alternatives().try(Joi.number(), Joi.string().allow('')).label("Extent (p)"),
-  floorArea: Joi.number().allow(null).label("Floor Area"),
+  floorArea: Joi.alternatives().try(Joi.number(), Joi.string().allow('')).label("Floor Area"),
   generalCondition: Joi.string().allow('').label("General Condition"),
   issuedDate: Joi.date().allow(null).label("Issued Date"),
   landFenced: Joi.alternatives().try(Joi.boolean(), Joi.string().valid("yes", "no").allow('')).label("Land Fenced"),
