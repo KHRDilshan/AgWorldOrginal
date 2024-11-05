@@ -1,8 +1,8 @@
 const { response } = require('express');
 const db = require('../startup/database');
-// const {
-// addFixedAssetSchema
-// } = require("../validations/fixedAssest-validation"); 
+const {
+addFixedAssetSchema
+} = require("../validations/fixedAssest-validation"); 
 
 // Helper function to format date
 const formatDate = (dateString) => {
@@ -13,18 +13,18 @@ const formatDate = (dateString) => {
 
 // Add a fixed asset
 exports.addFixedAsset = (req, res) => {
-      // const { error } = addFixedAssetSchema.validate(req.body);
+      const { error } = addFixedAssetSchema.validate(req.body);
     // if (error) {
     //     console.log("Validation Error Details:", error.details);
     //     return res.status(400).json({ message: 'Validation error', errors: error.details });
     // }
     // Assuming you receive the error response in a variable called `error`
     // Only respond with the error message
-// if (error) {
-//     const errorMessages = error.details.map(detail => detail.message).join(', ');
-//     console.log("Validation Error Messages:", errorMessages);  // Log error messages
-//     return res.status(400).json({ message: errorMessages });
-// }
+if (error) {
+    const errorMessages = error.details.map(detail => detail.message).join(', ');
+    console.log("Validation Error Messages:", errorMessages);  // Log error messages
+    return res.status(400).json({ message: errorMessages });
+}
 
     const userId = req.user.id;
     const {
