@@ -69,7 +69,7 @@ exports.addFixedAssetSchema = Joi.object({
   type: Joi.string().allow('').label("Type"),
   unitPrice: Joi.alternatives().try(Joi.number(), Joi.string().allow('')).label("Unit Price"),
   warranty: Joi.alternatives().try(Joi.boolean(), Joi.string().valid("yes", "no").allow('')).label("Warranty"),
-  landowenership: Joi.string().allow('').label("Landowenership"),
+  landownership: Joi.string().allow('').label("Landowenership"),
   warrantystatus: Joi.array().items(
     Joi.object({
       key: Joi.string().allow(''),
