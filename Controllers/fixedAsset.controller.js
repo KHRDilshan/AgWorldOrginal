@@ -359,8 +359,8 @@ if (error) {
                     return res.status(400).json({ message: 'Invalid category provided.' });
                 });
             }
-        })
-    }
+        
+    
         });
     });
 };
