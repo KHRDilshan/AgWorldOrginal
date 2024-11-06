@@ -74,7 +74,7 @@ if (error) {
                         case 'Own Building (with title ownership)':
                             ownershipSql = `INSERT INTO ownershipownerfixedasset (buildingAssetId, issuedDate, estimateValue)
                                             VALUES (?, ?, ?)`;
-                            ownershipParams = [fixedAssetId , formattedIssuedDate, estimateValue];
+                            ownershipParams = [ buildingAssetId , formattedIssuedDate, estimateValue];
                             break;
 
                         case 'Leased Building':
