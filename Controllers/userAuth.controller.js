@@ -1,6 +1,13 @@
 const jwt = require("jsonwebtoken");
 const db = require("../startup/database");
 const asyncHandler = require("express-async-handler");
+const {
+  signUpSchema,
+  loginSchema,
+  updatePhoneNumberSchema,
+  updateFirstLastNameSchema,
+  signupCheckerSchema,
+} = require("../validations/userAuth-validation");
 
 //sign up controller
 const SignUp = asyncHandler(async(req, res) => {
@@ -55,6 +62,10 @@ const SignUp = asyncHandler(async(req, res) => {
 
 // Login Controller
 const loginController = (req, res) => {
+     const { error } = loginSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
     const phoneNumber = req.body.phonenumber;
     console.log(phoneNumber);
 
