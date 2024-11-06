@@ -216,7 +216,7 @@ if (error) {
 
             }else if (category === 'Machine and Vehicles') {
                 const machToolsSql = `INSERT INTO machtoolsfixedasset (fixedAssetId, asset, assetType, mentionOther, brand, numberOfUnits, unitPrice, totalPrice, warranty)
-                                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+                                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
                 // Insert into machtoolsfixedasset table
                 db.query(machToolsSql, [fixedAssetId, asset, assetType, mentionOther, brand, numberOfUnits, unitPrice, totalPrice, warranty], (machToolsErr, machToolsResult) => {
@@ -232,7 +232,7 @@ if (error) {
                     if (warrantystatus === 'yes') {
                         // Insert into machtoolsfixedassetwarranty table
                         const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus)
-                                                      VALUES (?, ?, ?, ?, ?)`;
+                                                      VALUES (?, ?, ?, ?)`;
                         db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
                             if (warrantyErr) {
                                 return db.rollback(() => {
@@ -253,7 +253,7 @@ if (error) {
                     } else if (warrantystatus === 'no') {
 
                         const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus)
-                                                      VALUES (?, ?, ?, ?, ?)`;
+                                                      VALUES (?, ?, ?, ?)`;
                         db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
                             if (warrantyErr) {
                                 return db.rollback(() => {
