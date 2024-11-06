@@ -459,26 +459,25 @@ exports.getFixedAssetDetailsById = (req, res) => {
                 WHERE oof.landAssetId = ?`;
 
         } else if (category === 'Building and Infrastructures') {
-            sqlQuery = `
-                SELECT fa.id, fa.category, bfa.type, bfa.floorArea, bfa.ownership, bfa.generalCondition, bfa.district
-                FROM fixedasset fa
-                JOIN buildingfixedasset bfa ON fa.id = bfa.fixedAssetId
-                WHERE fa.userId = ? AND fa.id = ?`;
+    sqlQuery = `
+        SELECT fa.id, fa.category, bfa.type, bfa.floorArea, bfa.ownership, bfa.generalCondition, bfa.district
+        FROM fixedasset fa
+        JOIN buildingfixedasset bfa ON fa.id = bfa.fixedAssetId
+        WHERE fa.userId = ? AND fa.id = ?`;
 
-            ownershipQuery = `
-                SELECT 
-                    oof.issuedDate, oof.estimateValue, 
-                    olf.startDate, olf.durationYears, olf.leastAmountAnnually,
-                    opf.permitFeeAnnually, 
-                    osf.paymentAnnually
-                FROM ownershipownerfixedasset oof
-                LEFT JOIN ownershipleastfixedasset olf ON oof.buildingAssetId = oof.buildingAssetId
-                LEFT JOIN ownershippermitfixedasset opf ON oof.buildingAssetId = opf.buildingAssetId
-                LEFT JOIN ownershipsharedfixedasset osf ON oof.buildingAssetId = osf.buildingAssetId
-                WHERE oof.buildingAssetId = ?`;
-
-        } else if (category === 'Machine and Vehicles' || category === 'Tools') {
-            sqlQuery = `
+    ownershipQuery = `
+        SELECT 
+            oof.issuedDate, oof.estimateValue, 
+            olf.startDate, olf.durationYears, olf.leastAmountAnnually,
+            opf.permitFeeAnnually, 
+            osf.paymentAnnually
+        FROM ownershipownerfixedasset oof
+        LEFT JOIN ownershipleastfixedasset olf ON oof.buildingAssetId = olf.buildingAssetId
+        LEFT JOIN ownershippermitfixedasset opf ON oof.buildingAssetId = opf.buildingAssetId
+        LEFT JOIN ownershipsharedfixedasset osf ON oof.buildingAssetId = osf.buildingAssetId
+        WHERE oof.buildingAssetId = ?`;
+}
+   sqlQuery = `
                 SELECT fa.id, fa.category, mtfa.asset, mtfa.assetType, mtfa.mentionOther, mtfa.brand, mtfa.numberOfUnits, mtfa.unitPrice, mtfa.totalPrice, mtfa.warranty
                 FROM fixedasset fa
                 JOIN machtoolsfixedasset mtfa ON fa.id = mtfa.fixedAssetId
