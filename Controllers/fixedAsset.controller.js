@@ -50,6 +50,8 @@ if (error) {
 
             const fixedAssetId = fixedAssetResult.insertId;
             console.log("Fixed asset id:", fixedAssetId);
+            const buildingAssetId = buildingResult.insertId;
+            console.log("Building asset id:", buildingAssetId);
 
             // Handle category 'Building and Infrastructures'
             if (category === 'Building and Infrastructures') {
@@ -74,7 +76,7 @@ if (error) {
                         case 'Own Building (with title ownership)':
                             ownershipSql = `INSERT INTO ownershipownerfixedasset (buildingAssetId, issuedDate, estimateValue)
                                             VALUES (?, ?, ?)`;
-                            ownershipParams = [fixedAssetId, formattedIssuedDate, estimateValue];
+                            ownershipParams = [buildingAssetId , formattedIssuedDate, estimateValue];
                             break;
 
                         case 'Leased Building':
