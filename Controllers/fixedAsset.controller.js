@@ -519,6 +519,7 @@ exports.getFixedAssetDetailsById = (req, res) => {
                 }
 
                 asset.ownershipDetails = ownershipResults[0] || null;
+                console.log(asset.ownershipDetails)
 
                 // Commit the transaction and return the asset details with ownership
                 db.commit((commitErr) => {
