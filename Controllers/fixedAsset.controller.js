@@ -472,7 +472,7 @@ exports.getFixedAssetDetailsById = (req, res) => {
                     opf.permitFeeAnnually, 
                     osf.paymentAnnually
                 FROM ownershipownerfixedasset oof
-                LEFT JOIN ownershipleastfixedasset olf ON oof.buildingAssetId = olf.buildingAssetId
+                LEFT JOIN ownershipleastfixedasset olf ON oof.buildingAssetId = oof.buildingAssetId
                 LEFT JOIN ownershippermitfixedasset opf ON oof.buildingAssetId = opf.buildingAssetId
                 LEFT JOIN ownershipsharedfixedasset osf ON oof.buildingAssetId = osf.buildingAssetId
                 WHERE oof.buildingAssetId = ?`;
