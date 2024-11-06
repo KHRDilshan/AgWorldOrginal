@@ -14,12 +14,6 @@ const formatDate = (dateString) => {
 // Add a fixed asset
 exports.addFixedAsset = (req, res) => {
       const { error } = addFixedAssetSchema.validate(req.body);
-    // if (error) {
-    //     console.log("Validation Error Details:", error.details);
-    //     return res.status(400).json({ message: 'Validation error', errors: error.details });
-    // }
-    // Assuming you receive the error response in a variable called `error`
-    // Only respond with the error message
 if (error) {
     const errorMessages = error.details.map(detail => detail.message).join(', ');
     console.log("Validation Error Messages:", errorMessages);  // Log error messages
@@ -80,25 +74,25 @@ if (error) {
                         case 'Own Building (with title ownership)':
                             ownershipSql = `INSERT INTO ownershipownerfixedasset (buildingAssetId, issuedDate, estimateValue)
                                             VALUES (?, ?, ?)`;
-                            ownershipParams = [buildingAssetId, formattedIssuedDate, estimateValue];
+                            ownershipParams = [fixedAssetId, formattedIssuedDate, estimateValue];
                             break;
 
                         case 'Leased Building':
                             ownershipSql = `INSERT INTO ownershipleastfixedasset (buildingAssetId, startDate, durationYears, durationMonths, leastAmountAnnually)
                                             VALUES (?, ?, ?, ?, ?)`;
-                            ownershipParams = [buildingAssetId, formattedStartDate, durationYears, durationMonths, leastAmountAnnually];
+                            ownershipParams = [fixedAssetId, formattedStartDate, durationYears, durationMonths, leastAmountAnnually];
                             break;
 
                         case 'Permit Building':
                             ownershipSql = `INSERT INTO ownershippermitfixedasset (buildingAssetId, issuedDate, permitFeeAnnually)
                                             VALUES (?, ?, ?)`;
-                            ownershipParams = [buildingAssetId, formattedIssuedDate, permitFeeAnnually];
+                            ownershipParams = [fixedAssetId, formattedIssuedDate, permitFeeAnnually];
                             break;
 
                         case 'Shared / No Ownership':
                             ownershipSql = `INSERT INTO ownershipsharedfixedasset (buildingAssetId, paymentAnnually)
                                             VALUES (?, ?)`;
-                            ownershipParams = [buildingAssetId, paymentAnnually];
+                            ownershipParams = [fixedAssetId, paymentAnnually];
                             break;
 
                         default:
@@ -144,7 +138,7 @@ if (error) {
                     if (landownership === 'Own') {
                         const ownershipOwnerSql = `INSERT INTO ownershipownerfixedasset (landAssetId, issuedDate, estimateValue)
                                                    VALUES (?, ?, ?)`;
-                        db.query(ownershipOwnerSql, [landAssetId, formattedIssuedDate, estimateValue], (ownershipErr) => {
+                        db.query(ownershipOwnerSql, [fixedAssetId, formattedIssuedDate, estimateValue], (ownershipErr) => {
                             if (ownershipErr) {
                                 return db.rollback(() => {
                                     return res.status(500).json({ message: 'Error inserting into ownershipownerfixedasset table', error: ownershipErr });
@@ -162,7 +156,7 @@ if (error) {
                     } else if (landownership === 'Lease') {
                         const ownershipLeaseSql = `INSERT INTO ownershipleastfixedasset (landAssetId, startDate, durationYears,durationMonths, leastAmountAnnually)
                                                    VALUES (?, ?, ?, ?,?)`;
-                        db.query(ownershipLeaseSql, [landAssetId, formattedStartDate, durationYears,durationMonths, leastAmountAnnually], (leaseErr) => {
+                        db.query(ownershipLeaseSql, [fixedAssetId, formattedStartDate, durationYears,durationMonths, leastAmountAnnually], (leaseErr) => {
                             if (leaseErr) {
                                 return db.rollback(() => {
                                     return res.status(500).json({ message: 'Error inserting into ownershipleastfixedasset table', error: leaseErr });
@@ -180,7 +174,7 @@ if (error) {
                     } else if (landownership === 'Permited') {
                         const ownershipPermitSql = `INSERT INTO ownershippermitfixedasset (landAssetId, issuedDate, permitFeeAnnually)
                                                     VALUES (?, ?, ?)`;
-                        db.query(ownershipPermitSql, [landAssetId, formattedIssuedDate, permitFeeAnnually], (permitErr) => {
+                        db.query(ownershipPermitSql, [fixedAssetId, formattedIssuedDate, permitFeeAnnually], (permitErr) => {
                             if (permitErr) {
                                 return db.rollback(() => {
                                     return res.status(500).json({ message: 'Error inserting into ownershippermitfixedasset table', error: permitErr });
@@ -198,7 +192,7 @@ if (error) {
                     } else if (landownership === 'Shared') {
                         const ownershipSharedSql = `INSERT INTO ownershipsharedfixedasset (landAssetId, paymentAnnually)
                                                     VALUES (?, ?)`;
-                        db.query(ownershipSharedSql, [landAssetId, paymentAnnually], (sharedErr) => {
+                        db.query(ownershipSharedSql, [fixedAssetId, paymentAnnually], (sharedErr) => {
                             if (sharedErr) {
                                 return db.rollback(() => {
                                     return res.status(500).json({ message: 'Error inserting into ownershipsharedfixedasset table', error: sharedErr });
@@ -239,7 +233,7 @@ if (error) {
                         // Insert into machtoolsfixedassetwarranty table
                         const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus)
                                                       VALUES (?, ?, ?, ?)`;
-                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
+                        db.query(machToolsWarrantySql, [fixedAssetId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
                             if (warrantyErr) {
                                 return db.rollback(() => {
                                     return res.status(500).json({ message: 'Error inserting into machtoolsfixedassetwarranty table', error: warrantyErr });
@@ -260,7 +254,7 @@ if (error) {
 
                         const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus)
                                                       VALUES (?, ?, ?, ?)`;
-                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
+                        db.query(machToolsWarrantySql, [fixedAssetId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
                             if (warrantyErr) {
                                 return db.rollback(() => {
                                     return res.status(500).json({ message: 'Error inserting into machtoolsfixedassetwarranty table', error: warrantyErr });
@@ -309,7 +303,7 @@ if (error) {
                         // Insert into machtoolsfixedassetwarranty table
                         const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus)
                                                       VALUES (?, ?, ?, ?)`;
-                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
+                        db.query(machToolsWarrantySql, [fixedAssetId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
                             if (warrantyErr) {
                                 return db.rollback(() => {
                                     return res.status(500).json({ message: 'Error inserting into machtoolsfixedassetwarranty table', error: warrantyErr });
@@ -330,7 +324,7 @@ if (error) {
 
                         const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus)
                                                       VALUES (?, ?, ?, ?)`;
-                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
+                        db.query(machToolsWarrantySql, [fixedAssetId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
                             if (warrantyErr) {
                                 return db.rollback(() => {
                                     return res.status(500).json({ message: 'Error inserting into machtoolsfixedassetwarranty table', error: warrantyErr });
