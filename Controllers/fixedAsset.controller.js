@@ -229,11 +229,11 @@ if (error) {
                     const machToolsId = machToolsResult.insertId; // Get the inserted machToolsId
 
                     // Check warranty status
-                    if (warrantystatus === 'yes') {
+                    if (warranty === 'yes') {
                         // Insert into machtoolsfixedassetwarranty table
-                        const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus)
+                        const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warranty)
                                                       VALUES (?, ?, ?, ?)`;
-                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
+                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warranty], (warrantyErr) => {
                             if (warrantyErr) {
                                 return db.rollback(() => {
                                     return res.status(500).json({ message: 'Error inserting into machtoolsfixedassetwarranty table', error: warrantyErr });
@@ -250,11 +250,11 @@ if (error) {
                                 return res.status(201).json({ message: 'Machine and tools fixed asset with warranty created successfully.' });
                             });
                         });
-                    } else if (warrantystatus === 'no') {
+                    } else if (warranty === 'no') {
 
-                        const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus)
+                        const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warranty)
                                                       VALUES (?, ?, ?, ?)`;
-                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
+                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warranty], (warrantyErr) => {
                             if (warrantyErr) {
                                 return db.rollback(() => {
                                     return res.status(500).json({ message: 'Error inserting into machtoolsfixedassetwarranty table', error: warrantyErr });
@@ -299,11 +299,11 @@ if (error) {
                     const machToolsId = machToolsResult.insertId; // Get the inserted machToolsId
 
                     // Check warranty status
-                    if (warrantystatus === 'yes') {
+                    if (warranty === 'yes') {
                         // Insert into machtoolsfixedassetwarranty table
-                        const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus)
+                        const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warranty)
                                                       VALUES (?, ?, ?, ?)`;
-                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
+                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warranty], (warrantyErr) => {
                             if (warrantyErr) {
                                 return db.rollback(() => {
                                     return res.status(500).json({ message: 'Error inserting into machtoolsfixedassetwarranty table', error: warrantyErr });
@@ -320,11 +320,11 @@ if (error) {
                                 return res.status(201).json({ message: 'Machine and tools fixed asset with warranty created successfully.' });
                             });
                         });
-                    } else if (warrantystatus === 'no') {
+                    } else if (warranty === 'no') {
 
-                        const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus)
+                        const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warranty)
                                                       VALUES (?, ?, ?, ?)`;
-                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
+                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warranty], (warrantyErr) => {
                             if (warrantyErr) {
                                 return db.rollback(() => {
                                     return res.status(500).json({ message: 'Error inserting into machtoolsfixedassetwarranty table', error: warrantyErr });
@@ -478,7 +478,6 @@ exports.getFixedAssetDetailsById = (req, res) => {
         LEFT JOIN ownershippermitfixedasset opf ON oof.buildingAssetId = opf.buildingAssetId
         LEFT JOIN ownershipsharedfixedasset osf ON oof.buildingAssetId = osf.buildingAssetId
         WHERE oof.buildingAssetId = ?`;
-            console.log("Ownership Query:", ownershipQuery);
 }else if (category === 'Machine and Vehicles' || category === 'Tools'){
    sqlQuery = `
                 SELECT fa.id, fa.category, mtfa.asset, mtfa.assetType, mtfa.mentionOther, mtfa.brand, mtfa.numberOfUnits, mtfa.unitPrice, mtfa.totalPrice, mtfa.warranty
