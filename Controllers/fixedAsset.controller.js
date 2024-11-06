@@ -508,6 +508,7 @@ exports.getFixedAssetDetailsById = (req, res) => {
             }
 
             const asset = assetResults[0];
+            console.log(asset.id)
             const assetOwnershipId = asset.id; // Assuming the asset's ID links to ownership
 
             // Execute the ownership query based on the asset type
@@ -519,7 +520,7 @@ exports.getFixedAssetDetailsById = (req, res) => {
                 }
 
                 asset.ownershipDetails = ownershipResults[0] || null;
-                console.log(asset.ownershipDetails)
+                
 
                 // Commit the transaction and return the asset details with ownership
                 db.commit((commitErr) => {
