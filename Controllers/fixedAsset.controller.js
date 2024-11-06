@@ -754,11 +754,12 @@ exports.updateFixedAsset = (req, res) => {
                         mtw.machToolsId = ?`;
         
                 ownershipParams = [
-                    assetData.ownershipDetails.purchaseDate,
-                    assetData.ownershipDetails.expireDate,
-                    assetData.ownershipDetails.warrantystatus,
-                    assetId
-                ];
+    assetData.ownershipDetails ? assetData.ownershipDetails.purchaseDate : null,
+    assetData.ownershipDetails ? assetData.ownershipDetails.expireDate : null,
+    assetData.ownershipDetails ? assetData.ownershipDetails.warrantystatus : null,
+    assetId
+];
+
             }
         }
          else {
