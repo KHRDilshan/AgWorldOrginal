@@ -272,19 +272,7 @@ if (error) {
                             });
                         });
 
-                    } else {
-                        // If no warranty, just commit the transaction
-                        db.commit((commitErr) => {
-                            if (commitErr) {
-                                return db.rollback(() => {
-                                    return res.status(500).json({ message: 'Commit error', error: commitErr });
-                                });
-                            }
-                            return res.status(201).json({ message: 'Machine and tools fixed asset created successfully without warranty.' });
-                        });
-                    }
-                });
-            }else if (category === 'Tools') {
+                    }else if (category === 'Tools') {
                 const machToolsSql = `INSERT INTO machtoolsfixedasset (fixedAssetId, asset, assetType, mentionOther, brand, numberOfUnits, unitPrice, totalPrice, warranty)
                                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
