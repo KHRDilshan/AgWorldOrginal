@@ -664,7 +664,7 @@ exports.updateFixedAsset = (req, res) => {
         }
          else if (category === 'Machine and Vehicles' || category === 'Tools') {
             // Check if assetType is 'Other' to validate additional fields
-            if (assetData.assetType === 'Other' assetData.asset === 'Other') {
+            if (assetData.assetType === 'Other' || assetData.asset === 'Other') {
                 // Ensure that all mandatory fields for 'Other' are provided
                 if (!assetData.mentionOther) {
                     return res.status(400).json({ message: 'Mention other field is required when assetType is "Other"' });
