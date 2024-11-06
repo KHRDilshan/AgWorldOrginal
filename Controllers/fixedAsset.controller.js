@@ -215,11 +215,11 @@ if (error) {
                 });
 
             }else if (category === 'Machine and Vehicles') {
-                const machToolsSql = `INSERT INTO machtoolsfixedasset (fixedAssetId, asset, assetType, mentionOther, brand, numberOfUnits, unitPrice, totalPrice, warranty, category)
+                const machToolsSql = `INSERT INTO machtoolsfixedasset (fixedAssetId, asset, assetType, mentionOther, brand, numberOfUnits, unitPrice, totalPrice, warranty)
                                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
                 // Insert into machtoolsfixedasset table
-                db.query(machToolsSql, [fixedAssetId, asset, assetType, mentionOther, brand, numberOfUnits, unitPrice, totalPrice, warranty, category], (machToolsErr, machToolsResult) => {
+                db.query(machToolsSql, [fixedAssetId, asset, assetType, mentionOther, brand, numberOfUnits, unitPrice, totalPrice, warranty], (machToolsErr, machToolsResult) => {
                     if (machToolsErr) {
                         return db.rollback(() => {
                             return res.status(500).json({ message: 'Error inserting into machtoolsfixedasset table', error: machToolsErr });
@@ -231,9 +231,9 @@ if (error) {
                     // Check warranty status
                     if (warrantystatus === 'yes') {
                         // Insert into machtoolsfixedassetwarranty table
-                        const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus, category)
+                        const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus)
                                                       VALUES (?, ?, ?, ?, ?)`;
-                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus, category], (warrantyErr) => {
+                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
                             if (warrantyErr) {
                                 return db.rollback(() => {
                                     return res.status(500).json({ message: 'Error inserting into machtoolsfixedassetwarranty table', error: warrantyErr });
@@ -252,9 +252,9 @@ if (error) {
                         });
                     } else if (warrantystatus === 'no') {
 
-                        const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus, category)
+                        const machToolsWarrantySql = `INSERT INTO machtoolsfixedassetwarranty (machToolsId, purchaseDate, expireDate, warrantystatus)
                                                       VALUES (?, ?, ?, ?, ?)`;
-                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus, category], (warrantyErr) => {
+                        db.query(machToolsWarrantySql, [machToolsId, formattedPurchaseDate, formattedExpireDate, warrantystatus], (warrantyErr) => {
                             if (warrantyErr) {
                                 return db.rollback(() => {
                                     return res.status(500).json({ message: 'Error inserting into machtoolsfixedassetwarranty table', error: warrantyErr });
