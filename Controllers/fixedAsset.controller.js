@@ -476,7 +476,7 @@ exports.getFixedAssetDetailsById = (req, res) => {
         LEFT JOIN ownershippermitfixedasset opf ON oof.buildingAssetId = opf.buildingAssetId
         LEFT JOIN ownershipsharedfixedasset osf ON oof.buildingAssetId = osf.buildingAssetId
         WHERE oof.buildingAssetId = ?`;
-}
+}else if (category === 'Machine and Vehicles' || category === 'Tools'){
    sqlQuery = `
                 SELECT fa.id, fa.category, mtfa.asset, mtfa.assetType, mtfa.mentionOther, mtfa.brand, mtfa.numberOfUnits, mtfa.unitPrice, mtfa.totalPrice, mtfa.warranty
                 FROM fixedasset fa
