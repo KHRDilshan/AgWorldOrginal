@@ -508,8 +508,8 @@ exports.getFixedAssetDetailsById = (req, res) => {
             }
 
             const asset = assetResults[0];
-            console.log(asset.id)
-            const assetOwnershipId = asset.id; // Assuming the asset's ID links to ownership
+            console.log(asset.mtfaId)
+            const assetOwnershipId = asset.mtfaId; // Assuming the asset's ID links to ownership
 
             // Execute the ownership query based on the asset type
             db.query(ownershipQuery, [assetOwnershipId], (ownershipErr, ownershipResults) => {
