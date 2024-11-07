@@ -480,7 +480,7 @@ exports.getFixedAssetDetailsById = (req, res) => {
         WHERE oof.buildingAssetId = ?`;
 }else if (category === 'Machine and Vehicles' || category === 'Tools'){
    sqlQuery = `
-                SELECT fa.id, fa.category, mtfa.asset, mtfa.assetType, mtfa.mentionOther, mtfa.brand, mtfa.numberOfUnits, mtfa.unitPrice, mtfa.totalPrice, mtfa.warranty
+                SELECT fa.id, fa.category, mtfa.asset, mtfa.assetType, mtfa.mentionOther, mtfa.brand, mtfa.numberOfUnits, mtfa.unitPrice, mtfa.totalPrice, mtfa.warranty, mtfa.id
                 FROM fixedasset fa
                 JOIN machtoolsfixedasset mtfa ON fa.id = mtfa.fixedAssetId
                 WHERE fa.userId = ? AND fa.id = ?`;
