@@ -654,7 +654,7 @@ exports.updateFixedAsset = (req, res) => {
             //     assetData.ownershipDetails ? assetData.ownershipDetails.estimateValue : null,
             //     assetData.id
             // ];
-            console.log(ownershipParams)
+            
 
             updateOwnershipQuery = `
     UPDATE ownershipownerfixedasset
@@ -668,6 +668,7 @@ ownershipParams = [
     assetData.ownershipDetails ? assetData.ownershipDetails.estimateValue : null,
     assetData.id
 ];
+            console.log(ownershipParams)
         }
          else if (category === 'Machine and Vehicles' || category === 'Tools') {
             // Check if assetType is 'Other' to validate additional fields
