@@ -443,7 +443,7 @@ exports.getFixedAssetDetailsById = (req, res) => {
         // Determine which SQL query to run based on category
         if (category === 'Land') {
             sqlQuery = `
-                SELECT fa.id, fa.category, lfa.district, lfa.extentha, lfa.extentac, lfa.extentp, lfa.ownership, lfa.landFenced, lfa.perennialCrop
+                SELECT fa.id AS faId, fa.category, lfa.district, lfa.extentha, lfa.extentac, lfa.extentp, lfa.ownership, lfa.landFenced, lfa.perennialCrop, lfa.id
                 FROM fixedasset fa
                 JOIN landfixedasset lfa ON fa.id = lfa.fixedAssetId
                 WHERE fa.userId = ? AND fa.id = ?`;
@@ -462,7 +462,7 @@ exports.getFixedAssetDetailsById = (req, res) => {
 
         } else if (category === 'Building and Infrastructures') {
     sqlQuery = `
-        SELECT fa.id, fa.category, bfa.type, bfa.floorArea, bfa.ownership, bfa.generalCondition, bfa.district
+        SELECT fa.id AS faId, fa.category, bfa.type, bfa.floorArea, bfa.ownership, bfa.generalCondition, bfa.district, bfa.id
         FROM fixedasset fa
         JOIN buildingfixedasset bfa ON fa.id = bfa.fixedAssetId
         WHERE fa.userId = ? AND fa.id = ?`;
@@ -480,7 +480,7 @@ exports.getFixedAssetDetailsById = (req, res) => {
         WHERE oof.buildingAssetId = ?`;
 }else if (category === 'Machine and Vehicles' || category === 'Tools'){
    sqlQuery = `
-                SELECT fa.id AS faId, fa.category, mtfa.asset, mtfa.assetType, mtfa.mentionOther, mtfa.brand, mtfa.numberOfUnits, mtfa.unitPrice, mtfa.totalPrice, mtfa.warranty, mtfa.id AS mtfaId
+                SELECT fa.id AS faId, fa.category, mtfa.asset, mtfa.assetType, mtfa.mentionOther, mtfa.brand, mtfa.numberOfUnits, mtfa.unitPrice, mtfa.totalPrice, mtfa.warranty, mtfa.id 
                 FROM fixedasset fa
                 JOIN machtoolsfixedasset mtfa ON fa.id = mtfa.fixedAssetId
                 WHERE fa.userId = ? AND fa.id = ?`;
@@ -508,8 +508,8 @@ exports.getFixedAssetDetailsById = (req, res) => {
             }
 
             const asset = assetResults[0];
-            console.log(asset.mtfaId)
-            const assetOwnershipId = asset.mtfaId; // Assuming the asset's ID links to ownership
+            console.log(asset.id)
+            const assetOwnershipId = asset.id; // Assuming the asset's ID links to ownership
 
             // Execute the ownership query based on the asset type
             db.query(ownershipQuery, [assetOwnershipId], (ownershipErr, ownershipResults) => {
