@@ -779,7 +779,6 @@ exports.updateFixedAsset = (req, res) => {
             // Execute the ownership update query
             db.query(updateOwnershipQuery, ownershipParams, (ownershipErr, ownershipResults) => {
                 console.log(ownershipErr)
-                console.log(ownershipResult)
                 if (ownershipErr) {
                     return db.rollback(() => {
                         return res.status(500).json({ message: 'Error updating ownership details', error: ownershipErr });
