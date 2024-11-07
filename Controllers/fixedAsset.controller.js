@@ -650,16 +650,16 @@ exports.updateFixedAsset = (req, res) => {
         
             // Ensure ownershipDetails is defined before accessing its properties
             ownershipParams = [
-              assetData.ownershipDetails ? assetData.ownershipDetails.issuedDate : null,
-              assetData.ownershipDetails ? assetData.ownershipDetails.estimateValue : null,
-              assetData.ownershipDetails ? assetData.ownershipDetails.startDate : null,
-              assetData.ownershipDetails ? assetData.ownershipDetails.durationYears : null,
-              assetData.ownershipDetails ? assetData.ownershipDetails.leastAmountAnnually : null,
-              assetData.ownershipDetails ? assetData.ownershipDetails.permitFeeAnnually : null,
-              assetData.ownershipDetails ? assetData.ownershipDetails.paymentAnnually : null,
-              assetId
-            ];
-            console.log(ownershipParams)
+  assetData.ownershipDetails ? assetData.ownershipDetails.issuedDate : null,
+  assetData.ownershipDetails ? assetData.ownershipDetails.estimateValue : null,
+  assetData.ownershipDetails ? assetData.ownershipDetails.startDate : null,
+  assetData.ownershipDetails ? assetData.ownershipDetails.durationYears : null,
+  assetData.ownershipDetails ? assetData.ownershipDetails.leastAmountAnnually : null,
+  assetData.ownershipDetails ? assetData.ownershipDetails.permitFeeAnnually : null,
+  assetData.ownershipDetails ? assetData.ownershipDetails.paymentAnnually : null,
+  assetData.id  // Use assetData.id if it matches buildingAssetId
+];
+
     
         }
          else if (category === 'Machine and Vehicles' || category === 'Tools') {
