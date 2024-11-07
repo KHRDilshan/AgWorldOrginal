@@ -659,6 +659,7 @@ exports.updateFixedAsset = (req, res) => {
                 assetData.ownershipDetails ? assetData.ownershipDetails.paymentAnnually : null,
                 assetId
             ];
+            console.log(ownershipParams)
         }
          else if (category === 'Machine and Vehicles' || category === 'Tools') {
             // Check if assetType is 'Other' to validate additional fields
