@@ -634,41 +634,33 @@ exports.updateFixedAsset = (req, res) => {
             ];
         
             // Ownership query for Building and Infrastructures
-            // updateOwnershipQuery = `
-            //     UPDATE ownershipownerfixedasset oof
-            //     LEFT JOIN ownershipleastfixedasset olf ON oof.buildingAssetId = olf.buildingAssetId
-            //     LEFT JOIN ownershippermitfixedasset opf ON oof.buildingAssetId = opf.buildingAssetId
-            //     LEFT JOIN ownershipsharedfixedasset osf ON oof.buildingAssetId = osf.buildingAssetId
-            //     SET oof.issuedDate = COALESCE(NULLIF(?, ''), oof.issuedDate),
-            //         oof.estimateValue = COALESCE(NULLIF(?, ''), oof.estimateValue),
-            //         olf.startDate = COALESCE(NULLIF(?, ''), olf.startDate),
-            //         olf.durationYears = COALESCE(NULLIF(?, ''), olf.durationYears),
-            //         olf.leastAmountAnnually = COALESCE(NULLIF(?, ''), olf.leastAmountAnnually),
-            //         opf.permitFeeAnnually = COALESCE(NULLIF(?, ''), opf.permitFeeAnnually),
-            //         osf.paymentAnnually = COALESCE(NULLIF(?, ''), osf.paymentAnnually)
-            //     WHERE oof.buildingAssetId = ?`;
-        
-            // // Ensure ownershipDetails is defined before accessing its properties
-            // ownershipParams = [
-            //     assetData.ownershipDetails ? assetData.ownershipDetails.issuedDate : null,
-            //     assetData.ownershipDetails ? assetData.ownershipDetails.estimateValue : null,
-            //     assetData.id
-            // ];
-            
-
             updateOwnershipQuery = `
-    UPDATE ownershipownerfixedasset
-    SET issuedDate = COALESCE(NULLIF(?, ''), issuedDate),
-        estimateValue = COALESCE(NULLIF(?, ''), estimateValue)
-    WHERE someIdentifier = ?`; // Use a valid identifier if available
-
-// Parameters for `ownershipownerfixedasset`
-ownershipParams = [
-    assetData.ownershipDetails ? assetData.ownershipDetails.issuedDate : null,
-    assetData.ownershipDetails ? assetData.ownershipDetails.estimateValue : null,
-    assetData.id
-];
+                UPDATE ownershipownerfixedasset oof
+                LEFT JOIN ownershipleastfixedasset olf ON oof.buildingAssetId = olf.buildingAssetId
+                LEFT JOIN ownershippermitfixedasset opf ON oof.buildingAssetId = opf.buildingAssetId
+                LEFT JOIN ownershipsharedfixedasset osf ON oof.buildingAssetId = osf.buildingAssetId
+                SET oof.issuedDate = COALESCE(NULLIF(?, ''), oof.issuedDate),
+                    oof.estimateValue = COALESCE(NULLIF(?, ''), oof.estimateValue),
+                    olf.startDate = COALESCE(NULLIF(?, ''), olf.startDate),
+                    olf.durationYears = COALESCE(NULLIF(?, ''), olf.durationYears),
+                    olf.leastAmountAnnually = COALESCE(NULLIF(?, ''), olf.leastAmountAnnually),
+                    opf.permitFeeAnnually = COALESCE(NULLIF(?, ''), opf.permitFeeAnnually),
+                    osf.paymentAnnually = COALESCE(NULLIF(?, ''), osf.paymentAnnually)
+                WHERE oof.buildingAssetId = ?`;
+        
+            // Ensure ownershipDetails is defined before accessing its properties
+            ownershipParams = [
+              assetData.ownershipDetails ? assetData.ownershipDetails.issuedDate : null,
+              assetData.ownershipDetails ? assetData.ownershipDetails.estimateValue : null,
+              assetData.ownershipDetails ? assetData.ownershipDetails.startDate : null,
+              assetData.ownershipDetails ? assetData.ownershipDetails.durationYears : null,
+              assetData.ownershipDetails ? assetData.ownershipDetails.leastAmountAnnually : null,
+              assetData.ownershipDetails ? assetData.ownershipDetails.permitFeeAnnually : null,
+              assetData.ownershipDetails ? assetData.ownershipDetails.paymentAnnually : null,
+              assetId
+            ];
             console.log(ownershipParams)
+    
         }
          else if (category === 'Machine and Vehicles' || category === 'Tools') {
             // Check if assetType is 'Other' to validate additional fields
@@ -786,6 +778,8 @@ ownershipParams = [
 
             // Execute the ownership update query
             db.query(updateOwnershipQuery, ownershipParams, (ownershipErr, ownershipResults) => {
+                console.log(ownershipErr)
+                console.log(ownershipResult)
                 if (ownershipErr) {
                     return db.rollback(() => {
                         return res.status(500).json({ message: 'Error updating ownership details', error: ownershipErr });
