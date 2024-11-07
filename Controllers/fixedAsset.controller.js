@@ -657,7 +657,8 @@ exports.updateFixedAsset = (req, res) => {
                 assetData.ownershipDetails ? assetData.ownershipDetails.leastAmountAnnually : null,
                 assetData.ownershipDetails ? assetData.ownershipDetails.permitFeeAnnually : null,
                 assetData.ownershipDetails ? assetData.ownershipDetails.paymentAnnually : null,
-                assetData.id
+                assetData.id,
+                assetId
             ];
             console.log(ownershipParams)
         }
