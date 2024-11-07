@@ -608,7 +608,7 @@ exports.updateFixedAsset = (req, res) => {
                 assetData.ownershipDetails ? assetData.ownershipDetails.leastAmountAnnually : null,
                 assetData.ownershipDetails ? assetData.ownershipDetails.permitFeeAnnually : null,
                 assetData.ownershipDetails ? assetData.ownershipDetails.paymentAnnually : null,
-                assetId
+                assetData.id
             ];
         }
         
@@ -650,15 +650,15 @@ exports.updateFixedAsset = (req, res) => {
         
             // Ensure ownershipDetails is defined before accessing its properties
             ownershipParams = [
-  assetData.ownershipDetails ? assetData.ownershipDetails.issuedDate : null,
-  assetData.ownershipDetails ? assetData.ownershipDetails.estimateValue : null,
-  assetData.ownershipDetails ? assetData.ownershipDetails.startDate : null,
-  assetData.ownershipDetails ? assetData.ownershipDetails.durationYears : null,
-  assetData.ownershipDetails ? assetData.ownershipDetails.leastAmountAnnually : null,
-  assetData.ownershipDetails ? assetData.ownershipDetails.permitFeeAnnually : null,
-  assetData.ownershipDetails ? assetData.ownershipDetails.paymentAnnually : null,
-  assetData.id  // Use assetData.id if it matches buildingAssetId
-];
+                   assetData.ownershipDetails ? assetData.ownershipDetails.issuedDate : null,
+                   assetData.ownershipDetails ? assetData.ownershipDetails.estimateValue : null,
+                   assetData.ownershipDetails ? assetData.ownershipDetails.startDate : null,
+                   assetData.ownershipDetails ? assetData.ownershipDetails.durationYears : null,
+                   assetData.ownershipDetails ? assetData.ownershipDetails.leastAmountAnnually : null,
+                   assetData.ownershipDetails ? assetData.ownershipDetails.permitFeeAnnually : null,
+                   assetData.ownershipDetails ? assetData.ownershipDetails.paymentAnnually : null,
+                   assetData.id  // Use assetData.id if it matches buildingAssetId
+            ];
 
     
         }
