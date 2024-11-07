@@ -594,6 +594,7 @@ exports.updateFixedAsset = (req, res) => {
                     oof.estimateValue = COALESCE(NULLIF(?, ''), oof.estimateValue),
                     olf.startDate = COALESCE(NULLIF(?, ''), olf.startDate),
                     olf.durationYears = COALESCE(NULLIF(?, ''), olf.durationYears),
+                    olf.durationMonths = COALESCE(NULLIF(?, ''), olf.durationMonths),
                     olf.leastAmountAnnually = COALESCE(NULLIF(?, ''), olf.leastAmountAnnually),
                     opf.permitFeeAnnually = COALESCE(NULLIF(?, ''), opf.permitFeeAnnually),
                     osf.paymentAnnually = COALESCE(NULLIF(?, ''), osf.paymentAnnually)
@@ -605,6 +606,7 @@ exports.updateFixedAsset = (req, res) => {
                 assetData.ownershipDetails ? assetData.ownershipDetails.estimateValue : null,
                 assetData.ownershipDetails ? assetData.ownershipDetails.startDate : null,
                 assetData.ownershipDetails ? assetData.ownershipDetails.durationYears : null,
+                assetData.ownershipDetails ? assetData.ownershipDetails.durationMonths : null,
                 assetData.ownershipDetails ? assetData.ownershipDetails.leastAmountAnnually : null,
                 assetData.ownershipDetails ? assetData.ownershipDetails.permitFeeAnnually : null,
                 assetData.ownershipDetails ? assetData.ownershipDetails.paymentAnnually : null,
