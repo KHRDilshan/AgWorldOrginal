@@ -644,6 +644,7 @@ exports.updateFixedAsset = (req, res) => {
                     oof.estimateValue = COALESCE(NULLIF(?, ''), oof.estimateValue),
                     olf.startDate = COALESCE(NULLIF(?, ''), olf.startDate),
                     olf.durationYears = COALESCE(NULLIF(?, ''), olf.durationYears),
+                     olf.durationMonths = COALESCE(NULLIF(?, ''), olf.durationMonths),
                     olf.leastAmountAnnually = COALESCE(NULLIF(?, ''), olf.leastAmountAnnually),
                     opf.permitFeeAnnually = COALESCE(NULLIF(?, ''), opf.permitFeeAnnually),
                     osf.paymentAnnually = COALESCE(NULLIF(?, ''), osf.paymentAnnually)
