@@ -466,17 +466,39 @@ exports.getFixedAssetDetailsById = (req, res) => {
         FROM fixedasset fa
         JOIN buildingfixedasset bfa ON fa.id = bfa.fixedAssetId
         WHERE fa.userId = ? AND fa.id = ?`;
-
+           
+            if (asset.ownership === 'Own Building (with title ownership)') {
     ownershipQuery = `
-        SELECT  
-            olf.startDate, olf.durationYears, olf.leastAmountAnnually, olf.durationMonths ,
-            opf.permitFeeAnnually, 
-            osf.paymentAnnually
+        SELECT 
+            oof.issuedDate, oof.estimateValue 
         FROM ownershipownerfixedasset oof
-        LEFT JOIN ownershipleastfixedasset olf ON olf.buildingAssetId = oof.buildingAssetId 
-        LEFT JOIN ownershippermitfixedasset opf ON oof.buildingAssetId = opf.buildingAssetId
-        LEFT JOIN ownershipsharedfixedasset osf ON oof.buildingAssetId = osf.buildingAssetId
         WHERE oof.buildingAssetId = ?`;
+} else if (asset.ownership === 'Leased Building') {
+    ownershipQuery = `
+        SELECT 
+            olf.startDate, olf.durationYears, olf.durationMonths, olf.leastAmountAnnually
+        FROM ownershipleastfixedasset olf
+        WHERE olf.buildingAssetId = ?`;
+} else if (asset.ownership === 'Permit Building') {
+    ownershipQuery = `
+        SELECT 
+            opf.permitFeeAnnually 
+        FROM ownershippermitfixedasset opf
+        WHERE opf.buildingAssetId = ?`;
+}
+
+
+    // ownershipQuery = `
+    //     SELECT  
+    //         oof.issuedDate, oof.estimateValue,
+    //         olf.startDate, olf.durationYears, olf.leastAmountAnnually, olf.durationMonths ,
+    //         opf.permitFeeAnnually, 
+    //         osf.paymentAnnually
+    //     FROM ownershipownerfixedasset oof
+    //     LEFT JOIN ownershipleastfixedasset olf ON olf.buildingAssetId = oof.buildingAssetId 
+    //     LEFT JOIN ownershippermitfixedasset opf ON oof.buildingAssetId = opf.buildingAssetId
+    //     LEFT JOIN ownershipsharedfixedasset osf ON oof.buildingAssetId = osf.buildingAssetId
+    //     WHERE oof.buildingAssetId = ?`;
 }else if (category === 'Machine and Vehicles' || category === 'Tools'){
    sqlQuery = `
                 SELECT fa.id AS faId, fa.category, mtfa.asset, mtfa.assetType, mtfa.mentionOther, mtfa.brand, mtfa.numberOfUnits, mtfa.unitPrice, mtfa.totalPrice, mtfa.warranty, mtfa.id 
