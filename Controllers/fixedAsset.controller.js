@@ -514,7 +514,6 @@ exports.getFixedAssetDetailsById = (req, res) => {
             // Execute the ownership query based on the asset type
             db.query(ownershipQuery, [assetOwnershipId], (ownershipErr, ownershipResults) => {
                 if (ownershipErr) {
-                    consol.log(ownershipErr)
                     return db.rollback(() => {
                         return res.status(500).json({ message: 'Error retrieving ownership details', error: ownershipErr });
                     });
