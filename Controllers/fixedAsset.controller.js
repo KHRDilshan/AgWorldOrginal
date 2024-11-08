@@ -454,8 +454,8 @@ exports.getFixedAssetDetailsById = (req, res) => {
                     olf.startDate, olf.durationYears, olf.leastAmountAnnually,
                     opf.permitFeeAnnually, 
                     osf.paymentAnnually
-                FROM ownershipleastfixedasset oof
-                LEFT JOIN ownershipownerfixedasset olf ON oof.landAssetId = olf.landAssetId
+                FROM ownershipownerfixedasset oof
+                LEFT JOIN ownershipleastfixedasset olf ON oof.landAssetId = olf.landAssetId
                 LEFT JOIN ownershippermitfixedasset opf ON oof.landAssetId = opf.landAssetId
                 LEFT JOIN ownershipsharedfixedasset osf ON oof.landAssetId = osf.landAssetId
                 WHERE oof.landAssetId = ?`;
@@ -473,8 +473,8 @@ exports.getFixedAssetDetailsById = (req, res) => {
             olf.startDate, olf.durationYears, olf.leastAmountAnnually, olf.durationMonths ,
             opf.permitFeeAnnually, 
             osf.paymentAnnually
-        FROM ownershipleastfixedasset oof
-        LEFT JOIN ownershipownerfixedasset olf ON oof.buildingAssetId = olf.buildingAssetId
+        FROM ownershipownerfixedasset oof
+        LEFT JOIN ownershipleastfixedasset olf ON oof.buildingAssetId = olf.buildingAssetId
         LEFT JOIN ownershippermitfixedasset opf ON oof.buildingAssetId = opf.buildingAssetId
         LEFT JOIN ownershipsharedfixedasset osf ON oof.buildingAssetId = osf.buildingAssetId
         WHERE oof.buildingAssetId = ?`;
