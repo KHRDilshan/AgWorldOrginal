@@ -468,8 +468,7 @@ exports.getFixedAssetDetailsById = (req, res) => {
         WHERE fa.userId = ? AND fa.id = ?`;
 
     ownershipQuery = `
-        SELECT 
-            oof.issuedDate, oof.estimateValue, 
+        SELECT  
             olf.startDate, olf.durationYears, olf.leastAmountAnnually, olf.durationMonths ,
             opf.permitFeeAnnually, 
             osf.paymentAnnually
