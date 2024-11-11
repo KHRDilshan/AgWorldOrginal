@@ -25,17 +25,13 @@ const signupDao = require('../dao/userAuth-dao');
 exports.loginUser = async (req, res) => {
   try {
     console.log("hi..the sec key is", process.env.JWT_SECRET);
-    // await loginUserSchema.validateAsync(req.body);
-    // const { error } = loginUserSchema.validate(req.body);
-    // if (error) {
-    //   return res.status(400).json({ message: error.details[0].message });
-    // }
-    await ValidationSchema.loginUserSchema.validateAsync(req.body);
-    const phonenumber = req.body
 
-    const phonenumber = req.body.phonenumber;
+    // Validate the request body
+    const { phonenumber } = await ValidationSchema.loginUserSchema.validateAsync(req.body);
+
     console.log("hi phonenumber", phonenumber);
 
+    // Query the database for the user
     const users = await userAuthDao.loginUser(phonenumber);
 
     if (!users || users.length === 0) {
@@ -50,7 +46,7 @@ exports.loginUser = async (req, res) => {
     // Generate JWT token
     const token = jwt.sign(
       { id: user.id, phoneNumber: user.phoneNumber },
-      process.env.JWT_SECRET || Tl,
+      process.env.JWT_SECRET || 'default_secret', // Corrected fallback value
       {
         expiresIn: "1h",
       }
