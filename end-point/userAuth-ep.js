@@ -3,13 +3,13 @@ const db = require("../startup/database");
 const asyncHandler = require("express-async-handler");
 // const {loginUserSchema} =require('../validations/userAuth-validation')
 // const loginUserSchema=require('../validations/userAuth-validation')
-const {
-  loginUserSchema,
-  signupUserSchema,
-  updatePhoneNumberSchema,
-  signupCheckerSchema,
-  updateFirstLastNameSchema
-} = require("../validations/UserAuth-validation");
+// const {
+//   loginUserSchema,
+//   signupUserSchema,
+//   updatePhoneNumberSchema,
+//   signupCheckerSchema,
+//   updateFirstLastNameSchema
+// } = require("../validations/UserAuth-validation");
 // const { updatePhoneNumberSchema } = require('../validations/userAuth-validation');
 // const {
 //   signUpSchema,
