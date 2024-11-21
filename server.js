@@ -56,8 +56,8 @@ app.use(process.env.AUTHOR, userCurrentAssetsRoutes);
 const publicforumRoutes = require("./routes/publicforum.routes");
 app.use(process.env.AUTHOR, publicforumRoutes);
 
-const calendartaskImages = require("./routes/cropCalendarimages-routes");
-app.use(process.env.AUTHOR, calendartaskImages);
+// const calendartaskImages = require("./routes/cropCalendarimages-routes");
+// app.use(process.env.AUTHOR, calendartaskImages);
 
 
 app.use("/api/news", newsRoutes);
