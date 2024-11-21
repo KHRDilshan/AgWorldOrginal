@@ -6,6 +6,7 @@ const {loginUserSchema} =require('../validations/userAuth-validation')
 const {signupUserSchema}=require('../validations/userAuth-validation')
 const {updatePhoneNumberSchema}=require('../validations/userAuth-validation')
 const {signupCheckerSchema}=require('../validations/userAuth-validation')
+const {updateFirstLastNameSchema}=require('../validations/userAuth-validation')
 // const {
 //     loginUserSchema,
 //     signupUserSchema,
