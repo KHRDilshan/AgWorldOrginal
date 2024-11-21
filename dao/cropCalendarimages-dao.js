@@ -1,10 +1,7 @@
-// SlaveCropCalendarDAO.js
-const db = require('../startup/database'); // Ensure this imports your database connection
+const db = require('../startup/database'); 
 
-// Method to get the required images for a specific cropId
 exports.getRequiredImages = (cropId) => {
     return new Promise((resolve, reject) => {
-        // SQL query to fetch the 'reqImages' field from slavecropcalendardays table
         const query = `
       SELECT reqImages
       FROM slavecropcalendardays
@@ -12,22 +9,20 @@ exports.getRequiredImages = (cropId) => {
       LIMIT 1;
     `;
 
-        // Execute the query
         db.execute(query, [cropId], (err, results) => {
             if (err) {
                 reject(new Error('Error fetching required images: ' + err.message));
             } else {
                 if (results.length > 0) {
-                    resolve(results[0].reqImages); // Return the 'reqImages' value if found
+                    resolve(results[0].reqImages); 
                 } else {
-                    resolve(null); // If no record is found, return null
+                    resolve(null); 
                 }
             }
         });
     });
 };
 
-// Method to insert a task image into the 'taskimages' table
 exports.insertTaskImage = (slaveId, image) => {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO taskimages (slaveId, image) VALUES (?, ?)';

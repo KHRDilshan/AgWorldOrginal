@@ -1,14 +1,11 @@
-// Import necessary dependencies
-const { insertTaskImage, getRequiredImages } = require('../dao/cropCalendarImages-dao'); // Import the DAO function
-// Import the DAO function for required images
-const logger = require('winston'); // Logger for logging actions
 const multer = require('multer');
+const imageupDao = require("../dao/cropCalendarimages-dao");
+const asyncHandler = require("express-async-handler");
 
-// Configure multer to store the image in memory
 const storage = multer.memoryStorage();
 exports.upload = multer({
     storage: storage,
-    limits: { fileSize: 10 * 1024 * 1024 }, // Increase limit to 10 MB
+    limits: { fileSize: 10 * 1024 * 1024 }, 
     fileFilter: (req, file, cb) => {
         const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/jpg'];
         if (!allowedMimeTypes.includes(file.mimetype)) {
@@ -19,7 +16,7 @@ exports.upload = multer({
 });
 
 // Endpoint to handle image upload
-exports.uploadImage = async(req, res) => {
+exports.uploadImage = asyncHandler(async(req, res) => {
     try {
         // Log the received FormData content and file details
         console.log('Received FormData:', req.body);
@@ -38,7 +35,7 @@ exports.uploadImage = async(req, res) => {
         const image = req.file.buffer;
 
         // Assuming insertTaskImage handles the database insert
-        const result = await insertTaskImage(slaveId, image);
+        const result = await imageupDao.insertTaskImage(slaveId, image);
 
         console.log('Image uploaded successfully:', result); // Add log for success
         res.status(200).json({
@@ -60,10 +57,10 @@ exports.uploadImage = async(req, res) => {
         console.error('Error during image upload:', error); // Log detailed error
         res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
-};
+});
 
 // Endpoint to get the required images for a cropId
-exports.getRequiredImagesEndpoint = async(req, res) => {
+exports.getRequiredImagesEndpoint = asyncHandler(async(req, res) => {
     try {
         const { cropId } = req.params;
 
@@ -74,7 +71,7 @@ exports.getRequiredImagesEndpoint = async(req, res) => {
         }
 
         // Fetch the number of required images for the given cropId
-        const requiredImages = await getRequiredImages(cropId);
+        const requiredImages = await imageupDao.getRequiredImages(cropId);
 
         if (requiredImages === null) {
             return res.status(404).json({ message: 'No data found for the provided cropId.' });
@@ -88,6 +85,6 @@ exports.getRequiredImagesEndpoint = async(req, res) => {
         console.error('Error fetching required images:', error); // Log detailed error
         res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
-}; 
+}); 
 
 
