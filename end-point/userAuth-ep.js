@@ -4,6 +4,8 @@ const asyncHandler = require("express-async-handler");
 const userBankDetailsDAO = require('../dao/userAuth-dao');
 const {loginUserSchema} =require('../validations/userAuth-validation')
 const {signupUserSchema}=require('../validations/userAuth-validation')
+const {updatePhoneNumberSchema}=require('../validations/userAuth-validation')
+
 // const {
 //     loginUserSchema,
 //     signupUserSchema,
@@ -187,8 +189,9 @@ exports.getProfileDetails = asyncHandler(async(req, res) => {
 
 exports.updatePhoneNumber = asyncHandler(async(req, res) => {
     const userId = req.user.id; // Extract userId from token
-    const { newPhoneNumber } = req.body; // New phone number from request body
-
+    // const { newPhoneNumber } = req.body; // New phone number from request body
+    
+    const {newPhoneNumber } = await ValidationSchema.updatePhoneNumberSchema.validateAsync(req.body);
     // Validate the request body
     // await updatePhoneNumberSchema.validateAsync(req.body);
 
