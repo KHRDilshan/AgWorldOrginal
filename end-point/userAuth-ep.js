@@ -5,7 +5,7 @@ const userBankDetailsDAO = require('../dao/userAuth-dao');
 const {loginUserSchema} =require('../validations/userAuth-validation')
 const {signupUserSchema}=require('../validations/userAuth-validation')
 const {updatePhoneNumberSchema}=require('../validations/userAuth-validation')
-
+const {signupCheckerSchema}=require('../validations/userAuth-validation')
 // const {
 //     loginUserSchema,
 //     signupUserSchema,
@@ -221,8 +221,9 @@ exports.signupChecker = asyncHandler(async(req, res) => {
     try {
         // Validate the request body
         // await signupCheckerSchema.validateAsync(req.body);
+        const {phoneNumber, NICnumber } = await ValidationSchema.signupCheckerSchema.validateAsync(req.body);
 
-        const { phoneNumber, NICnumber } = req.body;
+        // const { phoneNumber, NICnumber } = req.body;
 
         // Call the DAO to check if the details exist in the database
         const results = await signupDao.checkSignupDetails(phoneNumber, NICnumber);
