@@ -3,7 +3,7 @@ const db = require("../startup/database");
 const asyncHandler = require("express-async-handler");
 const userBankDetailsDAO = require('../dao/userAuth-dao');
 const {loginUserSchema} =require('../validations/userAuth-validation')
-//const loginUserSchema=require('../validations/userAuth-validation')
+const {signupUserSchema}=require('../validations/userAuth-validation')
 // const {
 //     loginUserSchema,
 //     signupUserSchema,
@@ -112,7 +112,7 @@ exports.SignupUser = asyncHandler(async(req, res) => {
         // Validate the request body using Joi schema
         // await signupUserSchema.validateAsync(req.body);
 
-        const { firstName, lastName, phoneNumber, NICnumber } = req.body;
+        const { firstName, lastName, phoneNumber, NICnumber } = await ValidationSchema.signupUserSchema.validateAsync(req.body);
 
         // Format phone number to ensure "+" is added at the start, if not present
         const formattedPhoneNumber = `+${String(phoneNumber).replace(/^\+/, "")}`;
