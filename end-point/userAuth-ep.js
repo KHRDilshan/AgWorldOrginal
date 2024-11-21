@@ -20,7 +20,7 @@ exports.loginUser = async(req, res) => {
     try {
         console.log("hi..the sec key is", process.env.JWT_SECRET);
         const { phonenumber } = await ValidationSchema.loginUserSchema.validateAsync(req.body);
-         const { phonenumber } =req.body;
+         // const { phonenumber } =req.body;
 
   
         console.log("hi phonenumber", phonenumber);
