@@ -4,13 +4,13 @@ const asyncHandler = require("express-async-handler");
 const userBankDetailsDAO = require('../dao/userAuth-dao');
 // const {loginUserSchema} =require('../validations/userAuth-validation')
 //const loginUserSchema=require('../validations/userAuth-validation')
-const {
-    loginUserSchema,
-    signupUserSchema,
-    updatePhoneNumberSchema,
-    signupCheckerSchema,
-    updateFirstLastNameSchema
-} = require("../validations/UserAuth-validation");
+// const {
+//     loginUserSchema,
+//     signupUserSchema,
+//     updatePhoneNumberSchema,
+//     signupCheckerSchema,
+//     updateFirstLastNameSchema
+// } = require("../validations/UserAuth-validation");
 //const { updatePhoneNumberSchema } = require('../validations/userAuth-validation');
 const userAuthDao = require("../dao/userAuth-dao");
 const userProfileDao = require("../dao/userAuth-dao");
@@ -109,7 +109,7 @@ exports.loginUser = async(req, res) => {
 exports.SignupUser = asyncHandler(async(req, res) => {
     try {
         // Validate the request body using Joi schema
-        await signupUserSchema.validateAsync(req.body);
+        // await signupUserSchema.validateAsync(req.body);
 
         const { firstName, lastName, phoneNumber, NICnumber } = req.body;
 
