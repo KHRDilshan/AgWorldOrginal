@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const db = require("../startup/database");
 const asyncHandler = require("express-async-handler");
 const userBankDetailsDAO = require('../dao/userAuth-dao');
-// const {loginUserSchema} =require('../validations/userAuth-validation')
+const {loginUserSchema} =require('../validations/userAuth-validation')
 //const loginUserSchema=require('../validations/userAuth-validation')
 // const {
 //     loginUserSchema,
@@ -19,7 +19,7 @@ const signupDao = require('../dao/userAuth-dao');
 exports.loginUser = async(req, res) => {
     try {
         console.log("hi..the sec key is", process.env.JWT_SECRET);
-        // const { phonenumber } = await ValidationSchema.loginUserSchema.validateAsync(req.body);
+        const { phonenumber } = await ValidationSchema.loginUserSchema.validateAsync(req.body);
          const { phonenumber } =req.body;
 
   
