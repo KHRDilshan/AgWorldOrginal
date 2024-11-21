@@ -2,7 +2,7 @@
 const db = require('../startup/database'); // Ensure this imports your database connection
 
 // Method to get the required images for a specific cropId
-const getRequiredImages = (cropId) => {
+exports.getRequiredImages = (cropId) => {
     return new Promise((resolve, reject) => {
         // SQL query to fetch the 'reqImages' field from slavecropcalendardays table
         const query = `
@@ -28,7 +28,7 @@ const getRequiredImages = (cropId) => {
 };
 
 // Method to insert a task image into the 'taskimages' table
-const insertTaskImage = (slaveId, image) => {
+exports.insertTaskImage = (slaveId, image) => {
     return new Promise((resolve, reject) => {
         const query = 'INSERT INTO taskimages (slaveId, image) VALUES (?, ?)';
 
@@ -42,8 +42,3 @@ const insertTaskImage = (slaveId, image) => {
     });
 };
 
-// Exporting the methods
-module.exports = {
-    getRequiredImages,
-    insertTaskImage,
-};

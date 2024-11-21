@@ -6,7 +6,7 @@ const multer = require('multer');
 
 // Configure multer to store the image in memory
 const storage = multer.memoryStorage();
-const upload = multer({
+exports.upload = multer({
     storage: storage,
     limits: { fileSize: 10 * 1024 * 1024 }, // Increase limit to 10 MB
     fileFilter: (req, file, cb) => {
@@ -19,7 +19,7 @@ const upload = multer({
 });
 
 // Endpoint to handle image upload
-const uploadImage = async(req, res) => {
+exports.uploadImage = async(req, res) => {
     try {
         // Log the received FormData content and file details
         console.log('Received FormData:', req.body);
@@ -63,7 +63,7 @@ const uploadImage = async(req, res) => {
 };
 
 // Endpoint to get the required images for a cropId
-const getRequiredImagesEndpoint = async(req, res) => {
+exports.getRequiredImagesEndpoint = async(req, res) => {
     try {
         const { cropId } = req.params;
 
@@ -91,9 +91,3 @@ const getRequiredImagesEndpoint = async(req, res) => {
 }; 
 
 
-// Export endpoint handler and multer middleware
-module.exports = {
-    uploadImage,
-    upload,
-    getRequiredImagesEndpoint,
-};
