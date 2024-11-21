@@ -7,14 +7,6 @@ const {signupUserSchema}=require('../validations/userAuth-validation')
 const {updatePhoneNumberSchema}=require('../validations/userAuth-validation')
 const {signupCheckerSchema}=require('../validations/userAuth-validation')
 const {updateFirstLastNameSchema}=require('../validations/userAuth-validation')
-// const {
-//     loginUserSchema,
-//     signupUserSchema,
-//     updatePhoneNumberSchema,
-//     signupCheckerSchema,
-//     updateFirstLastNameSchema
-// } = require("../validations/UserAuth-validation");
-//const { updatePhoneNumberSchema } = require('../validations/userAuth-validation');
 const userAuthDao = require("../dao/userAuth-dao");
 const userProfileDao = require("../dao/userAuth-dao");
 const signupDao = require('../dao/userAuth-dao');
